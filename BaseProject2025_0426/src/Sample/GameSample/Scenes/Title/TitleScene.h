@@ -2,22 +2,22 @@
 
 namespace Sample::GameSample {
 
-	class TitleScene : public Scene::Base
-	{
-	public:
-		BP_CLASS_DECL(TitleScene, u8"GameSample/TitleScene");
+class TitleScene : public Scene::Base
+{
+public:
+    BP_CLASS_DECL(TitleScene, u8"GameSample/TitleScene");
 
-		std::string Name() { return "GameSample/TitleScene"; }
+    std::string Name() { return "GameSample/TitleScene"; }
 
-		bool Init() override;
+    bool Init() override;
 
-		void Update() override;
+    void Update() override;
 
-		void Draw() override;
+    void Draw() override;
 
-		void Exit() override;
+    void Exit() override;
 
-		void GUI() override;
-	};
+    void GUI() override;
+};
 
-}	 // namespace Sample::GameSample
+}    // namespace Sample::GameSample

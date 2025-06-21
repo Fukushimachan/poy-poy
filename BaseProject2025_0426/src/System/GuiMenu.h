@@ -6,11 +6,11 @@
 
 namespace gui {
 
-	class GuiMenuScene
-	{
-	public:
-		//! GUI表示
-		static void GUI();
-	};
+class GuiMenuScene
+{
+public:
+    //! GUI表示
+    static void GUI();
+};
 
-}	 // namespace gui
+}    // namespace gui
