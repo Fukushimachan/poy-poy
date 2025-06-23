@@ -16,8 +16,8 @@
 
 bool CheckIsNum(const std::string& check_string)
 {
-	// 全ての要素の文字コードが'0'以上'9'以下であるかどうかを返す
-	return std::all_of(check_string.begin(), check_string.end(), [&check_string](auto c) { return (c >= '0' && c <= '9'); });
+    // 全ての要素の文字コードが'0'以上'9'以下であるかどうかを返す
+    return std::all_of(check_string.begin(), check_string.end(), [&check_string](auto c) { return (c >= '0' && c <= '9'); });
 }
 
 //! 要素(複数)が数値であるか
@@ -29,7 +29,7 @@ bool CheckIsNum(const std::string& check_string)
 //----------------------------------------------------------------------------
 bool CheckIsNumForMultVar(const std::vector<std::string>& check_vars)
 {
-	return std::all_of(check_vars.begin(), check_vars.end(), [&check_vars](auto s) { return (CheckIsNum(s)); });
+    return std::all_of(check_vars.begin(), check_vars.end(), [&check_vars](auto s) { return (CheckIsNum(s)); });
 }
 
 //! 整数値取得
@@ -44,18 +44,18 @@ bool CheckIsNumForMultVar(const std::vector<std::string>& check_vars)
 
 const int IniFileLib::GetInt(const std::string& section, const std::string& key, int def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str = HelperLib::String::Trim(str, "{}; ");
+    str = HelperLib::String::Trim(str, "{}; ");
 
-	if(!CheckIsNum(str))
-		return def;
+    if(!CheckIsNum(str))
+        return def;
 
-	return stoi(str);
+    return stoi(str);
 }
 
 //----------------------------------------------------------------------------
@@ -68,18 +68,18 @@ const int IniFileLib::GetInt(const std::string& section, const std::string& key,
 
 const float IniFileLib::GetFloat(const std::string& section, const std::string& key, float def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str = HelperLib::String::Trim(str, "; ");
+    str = HelperLib::String::Trim(str, "; ");
 
-	if(!CheckIsNum(str))
-		return def;
+    if(!CheckIsNum(str))
+        return def;
 
-	return stof(str);
+    return stof(str);
 }
 
 //----------------------------------------------------------------------------
@@ -92,19 +92,19 @@ const float IniFileLib::GetFloat(const std::string& section, const std::string& 
 
 const float2 IniFileLib::GetFloat2(const std::string& section, const std::string& key, float2 def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str		= HelperLib::String::Trim(str, "{}; ");
-	auto v2 = HelperLib::String::Split(str, ',');
+    str     = HelperLib::String::Trim(str, "{}; ");
+    auto v2 = HelperLib::String::Split(str, ',');
 
-	if(!CheckIsNumForMultVar(v2))
-		return def;
+    if(!CheckIsNumForMultVar(v2))
+        return def;
 
-	return float2(stof(v2[0]), stof(v2[1]));
+    return float2(stof(v2[0]), stof(v2[1]));
 }
 
 //----------------------------------------------------------------------------
@@ -117,19 +117,19 @@ const float2 IniFileLib::GetFloat2(const std::string& section, const std::string
 
 const float3 IniFileLib::GetFloat3(const std::string& section, const std::string& key, float3 def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str		= HelperLib::String::Trim(str, "{}; ");
-	auto v2 = HelperLib::String::Split(str, ',');
+    str     = HelperLib::String::Trim(str, "{}; ");
+    auto v2 = HelperLib::String::Split(str, ',');
 
-	if(!CheckIsNumForMultVar(v2))
-		return def;
+    if(!CheckIsNumForMultVar(v2))
+        return def;
 
-	return float3(stof(v2[0]), stof(v2[1]), stof(v2[2]));
+    return float3(stof(v2[0]), stof(v2[1]), stof(v2[2]));
 }
 
 //----------------------------------------------------------------------------
@@ -142,19 +142,19 @@ const float3 IniFileLib::GetFloat3(const std::string& section, const std::string
 
 const float4 IniFileLib::GetFloat4(const std::string& section, const std::string& key, float4 def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str		= HelperLib::String::Trim(str, "{}; ");
-	auto v2 = HelperLib::String::Split(str, ',');
+    str     = HelperLib::String::Trim(str, "{}; ");
+    auto v2 = HelperLib::String::Split(str, ',');
 
-	if(!CheckIsNumForMultVar(v2))
-		return def;
+    if(!CheckIsNumForMultVar(v2))
+        return def;
 
-	return float4(stof(v2[0]), stof(v2[1]), stof(v2[2]), stof(v2[3]));
+    return float4(stof(v2[0]), stof(v2[1]), stof(v2[2]), stof(v2[3]));
 }
 
 //----------------------------------------------------------------------------
@@ -167,15 +167,15 @@ const float4 IniFileLib::GetFloat4(const std::string& section, const std::string
 
 const std::string IniFileLib::GetString(const std::string& section, const std::string& key, std::string def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str = HelperLib::String::Trim(str, "\";");
+    str = HelperLib::String::Trim(str, "\";");
 
-	return str;
+    return str;
 }
 
 //----------------------------------------------------------------------------
@@ -188,13 +188,13 @@ const std::string IniFileLib::GetString(const std::string& section, const std::s
 
 const std::vector<std::string> IniFileLib::GetStrings(const std::string& section, const std::string& key) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	const auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    const auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return std::vector<std::string>();
+    if(str == "None")
+        return std::vector<std::string>();
 
-	return HelperLib::String::Split(str, ',');
+    return HelperLib::String::Split(str, ',');
 }
 
 //----------------------------------------------------------------------------
@@ -207,28 +207,28 @@ const std::vector<std::string> IniFileLib::GetStrings(const std::string& section
 
 const bool IniFileLib::GetBool(const std::string& section, const std::string& key, bool def) const
 {
-	ReadBuffer(section.c_str(), key.c_str(), "None");
-	auto str = std::string(buffer_.data());
+    ReadBuffer(section.c_str(), key.c_str(), "None");
+    auto str = std::string(buffer_.data());
 
-	if(str == "None")
-		return def;
+    if(str == "None")
+        return def;
 
-	str = HelperLib::String::Trim(str, "\"; ");
-	if(str == "0")
-		return false;
-	if(str == "1")
-		return true;
-	if(str == "False")
-		return false;
-	if(str == "True")
-		return true;
-	if(str == "false")
-		return false;
-	if(str == "true")
-		return true;
+    str = HelperLib::String::Trim(str, "\"; ");
+    if(str == "0")
+        return false;
+    if(str == "1")
+        return true;
+    if(str == "False")
+        return false;
+    if(str == "True")
+        return true;
+    if(str == "false")
+        return false;
+    if(str == "true")
+        return true;
 
-	// 異なる文字などの場合はTrueとする
-	return true;
+    // 異なる文字などの場合はTrueとする
+    return true;
 }
 
 //----------------------------------------------------------------------------
@@ -240,5 +240,5 @@ const bool IniFileLib::GetBool(const std::string& section, const std::string& ke
 
 void IniFileLib::ReadBuffer(LPCTSTR section, LPCTSTR key, LPCTSTR def) const
 {
-	GetPrivateProfileStringA(section, key, def, buffer_.data(), (DWORD)buffer_.size(), file_.c_str());
+    GetPrivateProfileStringA(section, key, def, buffer_.data(), (DWORD)buffer_.size(), file_.c_str());
 }

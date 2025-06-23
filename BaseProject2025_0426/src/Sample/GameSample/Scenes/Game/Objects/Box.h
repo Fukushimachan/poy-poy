@@ -5,22 +5,22 @@
 
 namespace Sample::GameSample {
 
-	USING_PTR(Box);
+USING_PTR(Box);
 
-	class Box : public Object
-	{
-	public:
-		BP_OBJECT_DECL(Box, u8"GameSample/Box");
+class Box : public Object
+{
+public:
+    BP_OBJECT_DECL(Box, u8"GameSample/Box");
 
-		//! @brief 発生用関数
-		//! @param pos 発生場所
-		//! @param front 方向
-		//! @return オブジェクト
-		static BoxPtr Create(const float3& pos, const float3& front = {0, 0, 1});
+    //! @brief 発生用関数
+    //! @param pos 発生場所
+    //! @param front 方向
+    //! @return オブジェクト
+    static BoxPtr Create(const float3& pos, const float3& front = {0, 0, 1});
 
-		bool Init() override;
+    bool Init() override;
 
-		void Update() override;
-	};
+    void Update() override;
+};
 
-}	 // namespace Sample::GameSample
+}    // namespace Sample::GameSample

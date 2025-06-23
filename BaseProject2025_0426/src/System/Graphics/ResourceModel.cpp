@@ -10,47 +10,47 @@
 //---------------------------------------------------------------------------
 ResourceModel::ResourceModel(std::string_view path)
 {
-	//-----------------------------------------------------------------------
-	// MV1モデルの読み込み
-	//-----------------------------------------------------------------------
-	auto model_path = std::string(path);
-	// パスの保存
-	path_ = convertTo(model_path);
+    //-----------------------------------------------------------------------
+    // MV1モデルの読み込み
+    //-----------------------------------------------------------------------
+    auto model_path = std::string(path);
+    // パスの保存
+    path_ = convertTo(model_path);
 
-	// ハンドルの非同期読み込み処理が完了したら呼ばれる関数
-	auto finish_callback = [](int mv1_handle, void* data) {
-		auto* resource = reinterpret_cast<ResourceModel*>(data);
+    // ハンドルの非同期読み込み処理が完了したら呼ばれる関数
+    auto finish_callback = [](int mv1_handle, void* data) {
+        auto* resource = reinterpret_cast<ResourceModel*>(data);
 
-		// ジオメトリのキャッシュファイルが無かったら作成する
-		auto* model_cache = resource->model_cache_.get();
-		if(!model_cache->isExist()) {
-			model_cache->save(mv1_handle);
+        // ジオメトリのキャッシュファイルが無かったら作成する
+        auto* model_cache = resource->model_cache_.get();
+        if(!model_cache->isExist()) {
+            model_cache->save(mv1_handle);
 
-			// 読み込みなおす
-			model_cache->load();
-		}
+            // 読み込みなおす
+            model_cache->load();
+        }
 
-		// アクティブフラグを設定
-		resource->active_ = true;
-	};
+        // アクティブフラグを設定
+        resource->active_ = true;
+    };
 
-	//----------------------------------------------------------
-	// キャッシュファイルの読み込み
-	// キャッシュにはリダクションされたワイヤーフレーム表示用の頂点データーが入っています
-	//----------------------------------------------------------
-	model_cache_	  = std::make_unique<ModelCache>(model_path);
-	bool cache_result = model_cache_->load();
+    //----------------------------------------------------------
+    // キャッシュファイルの読み込み
+    // キャッシュにはリダクションされたワイヤーフレーム表示用の頂点データーが入っています
+    //----------------------------------------------------------
+    model_cache_      = std::make_unique<ModelCache>(model_path);
+    bool cache_result = model_cache_->load();
 
-	//----------------------------------------------------------
-	// 非同期読み込み
-	//----------------------------------------------------------
-	SetUseASyncLoadFlag(cache_result);	  // キャッシュファイルが無かった場合はブロッキングロードにする
-	{
-		// モデルの読み込み
-		mv1_handle_ = MV1LoadModel(model_path.c_str());
-		SetASyncLoadFinishCallback(mv1_handle_, (void (*)(int, void*))finish_callback, this);
-	}
-	SetUseASyncLoadFlag(false);
+    //----------------------------------------------------------
+    // 非同期読み込み
+    //----------------------------------------------------------
+    SetUseASyncLoadFlag(cache_result);    // キャッシュファイルが無かった場合はブロッキングロードにする
+    {
+        // モデルの読み込み
+        mv1_handle_ = MV1LoadModel(model_path.c_str());
+        SetASyncLoadFinishCallback(mv1_handle_, (void (*)(int, void*))finish_callback, this);
+    }
+    SetUseASyncLoadFlag(false);
 }
 
 //---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ ResourceModel::ResourceModel(std::string_view path)
 //---------------------------------------------------------------------------
 ResourceModel::~ResourceModel()
 {
-	MV1DeleteModel(mv1_handle_);
+    MV1DeleteModel(mv1_handle_);
 }
 
 //---------------------------------------------------------------------------
@@ -66,9 +66,9 @@ ResourceModel::~ResourceModel()
 //---------------------------------------------------------------------------
 void ResourceModel::waitForReadFinish()
 {
-	if(isActive() == false) {
-		WaitHandleASyncLoad(mv1_handle_);
-	}
+    if(isActive() == false) {
+        WaitHandleASyncLoad(mv1_handle_);
+    }
 }
 
 //---------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void ResourceModel::waitForReadFinish()
 //---------------------------------------------------------------------------
 ResourceModel::operator int() const
 {
-	return mv1_handle_;
+    return mv1_handle_;
 }
 
 //---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ ResourceModel::operator int() const
 //---------------------------------------------------------------------------
 ModelCache* ResourceModel::modelCache() const
 {
-	return model_cache_.get();
+    return model_cache_.get();
 }
 
 //---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ ModelCache* ResourceModel::modelCache() const
 //---------------------------------------------------------------------------
 const std::wstring& ResourceModel::path() const
 {
-	return path_;
+    return path_;
 }
 
 //---------------------------------------------------------------------------
@@ -100,7 +100,7 @@ const std::wstring& ResourceModel::path() const
 //---------------------------------------------------------------------------
 bool ResourceModel::isValid() const
 {
-	return mv1_handle_ != -1;
+    return mv1_handle_ != -1;
 }
 
 //---------------------------------------------------------------------------
@@ -108,5 +108,5 @@ bool ResourceModel::isValid() const
 //---------------------------------------------------------------------------
 bool ResourceModel::isActive() const
 {
-	return active_;
+    return active_;
 }
