@@ -26,10 +26,10 @@ bool Npc::Init()
     SetTranslate({0.0f, 0.0f, 0.0f});
     auto enemy = AddComponent<ComponentModel>("data/Sample/Enemy/Model.mv1");
     enemy->SetAnimation({
-    //    //{"Attack", "data/Sample/Enemy/Anim/Attack.mv1", 1, 1.0f},
-       { "walk",  "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
-    //    {"Death", "data/Sample/Enemy/Anim/Death.mv1", 0, 1.0f},
-    //    //	{"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
+        //    //{"Attack", "data/Sample/Enemy/Anim/Attack.mv1", 1, 1.0f},
+        {"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
+        //    {"Death", "data/Sample/Enemy/Anim/Death.mv1", 0, 1.0f},
+        //    //	{"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
     });
     // enemy->PlayAnimation("walk", TRUE);
     //auto move = this->AddComponent<ComponentObjectController>();
@@ -42,7 +42,7 @@ bool Npc::Init()
     auto pla_move = this->AddComponent<ComponentObjectController>();
     pla_move->SetMoveSpeed(1.0f);
     pla_move->SetRotateSpeed(20.0f);
-    
+
     // auto cam_comp = AddComponent<ComponentCamera>();
 
     //  SetTranslate({GetRand(500) - 200, 15.0f, GetRand(500) - 200});

@@ -16,7 +16,7 @@ public:
     BP_CLASS_DECL(Game01, u8"Tutorialのシーン");
     const int ground_w_max = 10;
     const int ground_h_max = 10;
-    const int ground_size = 20;
+    const int ground_size  = 20;
     //! @brief 初期化
     //! @return 初期化済み
     bool Init() override;

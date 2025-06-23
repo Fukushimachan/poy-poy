@@ -15,7 +15,7 @@ bool Game01::Init()
         for(int z = 0; z < ground_h_max; ++z) {
             auto ground = Scene::Object::Create<Ground>();
             ground->SetTranslate(
-                {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size/2});
+                {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size / 2});
         }
     }
     return true;

@@ -18,9 +18,8 @@ public:
     void Update() override;
     void Draw() override;
     void Exit() override;
-   
 
-    private:
+private:
     // 必要であれば変数をここに追加する
 };
 }    // namespace Game01

@@ -13,13 +13,13 @@ bool Ground::Init()
     Super::Init();
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
-  AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
+    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();
-  SetScaleAxisXYZ({2.0, 1.0, 2.0});
+    SetScaleAxisXYZ({2.0, 1.0, 2.0});
     // __super::Init();    //Object::Init();と同じ
-    
+
     //グラウンドオブジェクト
-   // AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
+    // AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
 
     //auto cam_lock = AddComponent<ComponentSpringArm>();
     // cam_lock->SetSpringArmObject("Player");
@@ -31,7 +31,6 @@ void Ground::Update()
 {
     // 毎フレーム動作する
     Super::Update();
-
 }
 void Ground::Draw()
 {
