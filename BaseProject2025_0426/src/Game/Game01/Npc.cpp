@@ -6,6 +6,17 @@
 
 //! @brief 初期化
 //! @return 初期化済み
+//! int
+float3 set_obj_pos;
+bool   check_key = false;
+
+bool   up_obj = false;
+int    count_click;
+float3 pos_obj_;
+float3 pos_npc_;
+
+float3 player_move_pos;
+
 namespace Game01 {
 
 bool Npc::Init()
@@ -29,6 +40,14 @@ bool Npc::Init()
     pla_move->SetMoveSpeed(1.0f);
     pla_move->SetRotateSpeed(20.0f);
 
+    auto npc = Scene::Object::Get<Object>("NPC");
+    auto obj = Scene::Object::Get<Object>("obj");
+    if(obj) {
+        pos_obj_ = obj->GetTranslate();
+    }
+    if(npc) {
+        pos_npc_ = npc->GetTranslate();
+    }
     // auto cam_comp = AddComponent<ComponentCamera>();
 
     //  SetTranslate({GetRand(500) - 200, 15.0f, GetRand(500) - 200});
@@ -41,7 +60,51 @@ bool Npc::Init()
 void Npc::Update()
 {
     Super::Update();
-    pos_ = GetTranslate();
+    pos_     = GetTranslate();
+    auto npc = Scene::Object::Get<Object>("NPC");
+    auto obj = Scene::Object::Get<Object>("obj");
+    if(npc) {
+        pos_npc_ = npc->GetTranslate();
+    }
+    if(obj) {
+        if(IsKeyOn(KEY_INPUT_P)) {
+            check_key = true;
+            count_click++;
+            if(count_click % 2 == 1) {
+                pos_obj_.y = pos_npc_.y + pos_obj_.y + 30.0f/*+( pos_npc_.x - player_move_pos.x)*/;
+                pos_obj_.x =/* pos_npc_.x*/ + pos_obj_.x -  player_move_pos.x;
+                pos_obj_.z =/* pos_npc_.z +*/ pos_obj_.z -  player_move_pos.z;
+                up_obj     = true;
+            }
+            if(count_click % 2 == 0) {
+                pos_obj_.y      = +pos_obj_.y - 30.0f;
+                pos_obj_.x      = +pos_obj_.x;
+                pos_obj_.z      = +pos_obj_.z;
+                player_move_pos = pos_obj_;
+               // player_move_pos = {0.0f, 0.0f, 0.0f};
+                up_obj          = false;
+            }
+        }
+        else {
+            check_key = false;
+            if(obj) {
+
+                //  obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
+                //AddTranslate({0, 0, -enemy_speed * speed_}, true);
+            }
+        }
+        if(up_obj == true) {
+            obj->SetTranslate({pos_obj_.x + pos_npc_.x, pos_obj_.y, pos_obj_.z + pos_npc_.z});
+        }
+        if(check_key == false) {
+            //set_obj_pos = pos_;
+        }
+        if(up_obj == false) {
+            obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
+        }
+
+        //AddTranslate({0, 0, -enemy_speed * speed_}, true);
+    }
     // 毎フレーム動作する
 }    // namespace Game01
 
