@@ -15,7 +15,7 @@ int    count_click;
 float3 pos_obj_;
 float3 pos_npc_;
 
-float3 player_move_pos;
+
 
 namespace Game01 {
 
@@ -71,39 +71,31 @@ void Npc::Update()
             check_key = true;
             count_click++;
             if(count_click % 2 == 1) {
-                pos_obj_.y = pos_npc_.y + pos_obj_.y + 30.0f/*+( pos_npc_.x - player_move_pos.x)*/;
-                pos_obj_.x =/* pos_npc_.x*/ + pos_obj_.x -  player_move_pos.x;
-                pos_obj_.z =/* pos_npc_.z +*/ pos_obj_.z -  player_move_pos.z;
-                up_obj     = true;
+                pos_obj_.y         = pos_npc_.y+ 30.0f;
+                pos_obj_.x         = 0;
+                pos_obj_.z         = 0 ;
+                up_obj             = true;
             }
-            if(count_click % 2 == 0) {
+            else if(count_click % 2 == 0) {
                 pos_obj_.y      = +pos_obj_.y - 30.0f;
-                pos_obj_.x      = +pos_obj_.x;
-                pos_obj_.z      = +pos_obj_.z;
-                player_move_pos = pos_obj_;
-               // player_move_pos = {0.0f, 0.0f, 0.0f};
-                up_obj          = false;
+                pos_obj_.x      = +pos_npc_.x;
+                pos_obj_.z      = pos_npc_.z;
+                up_obj = false;
             }
         }
         else {
             check_key = false;
-            if(obj) {
-
-                //  obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
-                //AddTranslate({0, 0, -enemy_speed * speed_}, true);
-            }
+    
         }
         if(up_obj == true) {
-            obj->SetTranslate({pos_obj_.x + pos_npc_.x, pos_obj_.y, pos_obj_.z + pos_npc_.z});
+            obj->SetTranslate({pos_npc_.x + pos_obj_.x, pos_obj_.y, pos_npc_.z+pos_obj_.z});
         }
         if(check_key == false) {
-            //set_obj_pos = pos_;
         }
         if(up_obj == false) {
             obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
         }
 
-        //AddTranslate({0, 0, -enemy_speed * speed_}, true);
     }
     // 毎フレーム動作する
 }    // namespace Game01
