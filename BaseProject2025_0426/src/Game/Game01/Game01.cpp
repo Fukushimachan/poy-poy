@@ -2,6 +2,7 @@
 #include "Npc.h"
 #include "Camera.h"
 #include "Ground.h"
+#include "Cone.h"
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
@@ -25,6 +26,7 @@ bool Game01::Init()
 void Game01::Update()
 {
     // 毎フレーム動作する
+ 
 }
 void Game01::Draw()
 {
