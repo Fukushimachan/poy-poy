@@ -15,8 +15,6 @@ int    count_click;
 float3 pos_obj_;
 float3 pos_npc_;
 
-
-
 namespace Game01 {
 
 bool Npc::Init()
@@ -66,36 +64,39 @@ void Npc::Update()
     if(npc) {
         pos_npc_ = npc->GetTranslate();
     }
+  
     if(obj) {
+       auto get_coll_obj= obj->GetComponent<ComponentCollisionCapsule>();
         if(IsKeyOn(KEY_INPUT_P)) {
             check_key = true;
             count_click++;
             if(count_click % 2 == 1) {
-                pos_obj_.y         = pos_npc_.y+ 30.0f;
-                pos_obj_.x         = 0;
-                pos_obj_.z         = 0 ;
-                up_obj             = true;
+                pos_obj_.y = pos_npc_.y + 30.0f;
+                pos_obj_.x = 0;
+                pos_obj_.z = 0;
+                up_obj     = true;
+                get_coll_obj->UseGravity(false);
+                
             }
             else if(count_click % 2 == 0) {
-                pos_obj_.y      = +pos_obj_.y - 30.0f;
-                pos_obj_.x      = +pos_npc_.x;
-                pos_obj_.z      = pos_npc_.z;
-                up_obj = false;
+              //  pos_obj_.y = +pos_obj_.y - 30.0f;
+               // pos_obj_.x = +pos_npc_.x;
+              //  pos_obj_.z = pos_npc_.z;
+                up_obj     = false;
+                get_coll_obj->UseGravity(true);
             }
         }
         else {
             check_key = false;
-    
         }
         if(up_obj == true) {
-            obj->SetTranslate({pos_npc_.x + pos_obj_.x, pos_obj_.y, pos_npc_.z+pos_obj_.z});
+            obj->SetTranslate({pos_npc_.x + pos_obj_.x, pos_obj_.y, pos_npc_.z + pos_obj_.z});
         }
         if(check_key == false) {
         }
         if(up_obj == false) {
-            obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
+         //   obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
         }
-
     }
     // 毎フレーム動作する
 }    // namespace Game01
