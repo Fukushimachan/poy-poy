@@ -11,11 +11,7 @@ bool Game01::Init()
 {
     //Scene::Object::Create<Npc>();
     Scene::Object::Create<Camera>();
-   Scene::Object::Create<Npc>();
-    for(int i = 0; i < 10; ++i) {
-       Scene::Object::Create<Cone>();
-
-    }
+    Scene::Object::Create<Npc>();
     for(int x = 0; x < ground_w_max; ++x) {
         for(int z = 0; z < ground_h_max; ++z) {
             auto ground = Scene::Object::Create<Ground>();

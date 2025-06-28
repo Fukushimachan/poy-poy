@@ -16,7 +16,6 @@ bool Npc::Init()
     SetTranslate({0.0f, 0.0f, 0.0f});
     auto enemy = AddComponent<ComponentModel>("data/Sample/Enemy/Model.mv1");
     enemy->SetAnimation({
-
         {"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
     });
     //コリジョンの追加
@@ -61,7 +60,6 @@ void Npc::Draw()
         float3 curr_pos = pos + (vx * x) + (vy * y);
 
         DxLib::DrawLine3D(cast(prev_pos), cast(curr_pos), GetColor(0, 255, 255));
-
         prev_pos = curr_pos;
     }
 }
