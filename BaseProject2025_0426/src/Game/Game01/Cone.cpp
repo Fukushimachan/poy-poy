@@ -2,27 +2,31 @@
 #include <System/Component/ComponentModel.h>
 #include <System/Component/ComponentCollisionModel.h>
 #include <System/Component/ComponentObjectController.h>
-#include <System/Component/ComponentCollisionCapsule.h>
-
+#include <System/Component/ComponentCollisionSphere.h>
+float3  position_;
+float3  pos_;
+float3  npc_pos;
+Object* _owner;
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
-
-bool Cone::Init()
+//float Cone::speed_    = 1.0f;
+float Cone::radius_ = 5.0f;
+bool  Cone::Init()
 {
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
-
+    pos_ = GetTranslate();
     // __super::Init();    //Object::Init();と同じ
     Super::Init();
-
+    //position_ = GetTranslate();
     SetName("obj");
     count_click = 0;
-    float h    = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
-    auto  coll = AddComponent<ComponentCollisionCapsule>();
-    SetTranslate({pos_dis.x, pos_dis.y, pos_dis.z});
-    coll->SetRadius(5);
-    coll->SetHeight(h + 1);
+    float h     = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
+    auto  coll  = AddComponent<ComponentCollisionSphere>();
+    coll->SetTranslate({pos_.x, pos_.y, pos_.z});
+    coll->SetRadius(radius_);
+    //coll->SetHeight(h + 1);
     coll->UseGravity(true);
     return true;
 }
@@ -36,61 +40,56 @@ void Cone::Update()
     auto player = Scene::Object::Get<Object>("Player");
     auto npc    = Scene::Object::Get<Object>("NPC");
     auto obj    = Scene::Object::Get<Object>("obj");
-    float3 npc_pos_;
+    npc_pos     = npc->GetTranslate();
     if(player) {
         //SetRotationToPositionWithLimit(player->GetTranslate(), 3.0f);
         //AddTranslate({0, 0, -enemy_speed * speed_}, true);
     }
     if(Input::IsKeyDown(KEY_INPUT_SPACE)) {
         // ジャンプを開始する
-        is_jump_ = true;
+        is_jump_    = true;
         jump_speed_ = 1.0f;
     }
     if(Input::IsKeyDown(KEY_INPUT_P)) {
         count_click++;
+        auto Get_col = GetComponent<ComponentCollisionSphere>();
+        if(count_click % 2 == 1) {
+            //  up_obj = true;
+            // Get_col-> UseGravity(false);
+        }
+        else if(count_click % 2 == 0) {
+            // SetSpeed(1.0f);
+            // up_obj = false;
+            //Get_col->UseGravity(true);
+        }
     }
-    if(is_jump_) {
-        // move_.y += jump_speed_ ;
-        AddTranslate({0, jump_speed_, 0});
+    if(up_obj == true) {
+        // SetTranslate({pos_.x + npc_pos.x, pos_.y, npc_pos.z + pos_.z});
+    }
+
+    if(is_jump_ == true) {
+        // jump_speed_ = 1.0f;
     }
     if(is_jump_ == false) {
-        npc_pos_   = npc->GetTranslate();
-        float3 pos_obj = GetTranslate();
-        pos_obj.y      = +pos_obj.y - 30.0f;
-        pos_obj.x      = +npc_pos_.x;
-        pos_obj.z      = npc_pos_.z;
-        //jump_speed_    = 0.0f;
-        SetTranslate(pos_obj);
+        // jump_speed_ = 0.0f;
     }
-    // ジャンプしていたら慣性の法則にしたがって上に移動させる
-    
-    // if(check_hit == false) {
-
-    //  }
-    //  else {
-    //if(auto model = GetComponent<ComponentModel>()) {
-    // if(auto model = model_.lock()) {
-    //     if(!model->IsPlaying()) {
-    //         Scene::Object::Release(SharedThis());
-    //     }
-    // }
-
-    // }
+    // AddTranslate({0, jump_speed_, 0});
 
     //auto obj = Scene::Object::Get<Object>("obj");
+    if(auto collision = collision_.lock()) {
+        collision->SetRadius(radius_);
+    }
+    AddTranslate(direction_ * speed_);
 }
 
 void Cone::Draw()
 {
     Super::Draw();
 
-    float3 pos_ = GetTranslate();
-    float3 position_;
-    float  h    = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
-    position_.x = pos_.x - h / 2;
-    position_.y = pos_.y - h / 2;
-    position_.z = pos_.z;
-    DrawCone3D(cast((float3)pos + position_ ), cast((float3)pos2 + position_ ), 5, 30, GetColor(0, 0, 0), GetColor(0, 0, 0), TRUE);
+    auto scale = GetScaleAxisXYZ();
+    auto color = GetColor(255, 255, 255);
+    auto pos   = GetTranslate();
+    DrawSphere3D(cast(pos), 5, 20, color, color, TRUE);
 }
 
 void Cone::Exit()
@@ -112,5 +111,12 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     }
     //--------------------------------------------------------------------------
 }
-
+void Cone::SetDirectior(float3 dir)
+{
+    direction_ = dir;
+}
+void Cone::SetSpeed(float speed)
+{
+    speed_ = speed;
+}
 }    // namespace Game01

@@ -1,20 +1,19 @@
 ﻿#include "Npc.h"
+#include "Cone.h"
 #include <System/Component/ComponentModel.h>
 #include <System/Component/ComponentCollisionModel.h>
 #include <System/Component/ComponentObjectController.h>
 #include <System/Component/ComponentCollisionCapsule.h>
-
+#include <System/Component/ComponentCollisionSphere.h>
 //! @brief 初期化
 //! @return 初期化済み
 //! int
 float3 set_obj_pos;
 bool   check_key = false;
 
-bool   up_obj = false;
 int    count_click;
 float3 pos_obj_;
 float3 pos_npc_;
-
 namespace Game01 {
 
 bool Npc::Init()
@@ -60,43 +59,55 @@ void Npc::Update()
     Super::Update();
     pos_     = GetTranslate();
     auto npc = Scene::Object::Get<Object>("NPC");
-    auto obj = Scene::Object::Get<Object>("obj");
+    auto obj = Scene::Object::Get<Cone>("obj");
     if(npc) {
         pos_npc_ = npc->GetTranslate();
     }
-  
+
     if(obj) {
-       auto get_coll_obj= obj->GetComponent<ComponentCollisionCapsule>();
+        float3 obj_pos_;
+        float3 obj_dir_move_;
+        float  obj_speed_;
         if(IsKeyOn(KEY_INPUT_P)) {
-            check_key = true;
-            count_click++;
+            check_key    = true;
+            auto Get_col = obj->GetComponent<ComponentCollisionSphere>();
             if(count_click % 2 == 1) {
-                pos_obj_.y = pos_npc_.y + 30.0f;
-                pos_obj_.x = 0;
-                pos_obj_.z = 0;
-                up_obj     = true;
-                get_coll_obj->UseGravity(false);
-                
+                obj_pos_.y = pos_npc_.y + 30.0f;
+                obj_pos_.x = 0;
+                obj_pos_.z = 0;
+                obj->SetTranslate(obj_pos_);
+                auto model = GetComponent<ComponentModel>();
+                auto dir   = -model->GetWorldMatrix().axisZ();
+                Get_col->UseGravity(false);
+
+                up_obj = true;
+                // get_coll_obj->
             }
             else if(count_click % 2 == 0) {
-              //  pos_obj_.y = +pos_obj_.y - 30.0f;
-               // pos_obj_.x = +pos_npc_.x;
-              //  pos_obj_.z = pos_npc_.z;
-                up_obj     = false;
-                get_coll_obj->UseGravity(true);
+                obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+                obj->SetTranslate(obj_pos_);
+                auto model = GetComponent<ComponentModel>();
+                auto dir   = -model->GetWorldMatrix().axisZ();
+                obj->SetDirectior(dir * 15);
+                Get_col->UseGravity(true);
+                up_obj = false;
+                //   get_coll_obj->UseGravity(true);
             }
         }
         else {
             check_key = false;
         }
-        if(up_obj == true) {
-            obj->SetTranslate({pos_npc_.x + pos_obj_.x, pos_obj_.y, pos_npc_.z + pos_obj_.z});
-        }
-        if(check_key == false) {
-        }
+
         if(up_obj == false) {
-         //   obj->SetTranslate({pos_obj_.x, pos_obj_.y, pos_obj_.z});
+            obj_speed_ = 1.0f;
+            obj->SetSpeed(obj_speed_);
         }
+        if(up_obj == true) {
+            obj_speed_ = 0.0f;
+            SetTranslate({obj_pos_.x + pos_.x, obj_pos_.y, obj_pos_.z + pos_.z});
+            obj->SetSpeed(obj_speed_);
+        }
+        //  obj->AddTranslate(obj_dir_move_ * obj_speed_);
     }
     // 毎フレーム動作する
 }    // namespace Game01
@@ -124,5 +135,16 @@ void Npc::Draw()
 
 void Npc::Exit()
 {
+}
+void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
+{
+    __super::OnHit(hit_info);
+    auto hit_object = hit_info.hit_collision_->GetOwner();
+    printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+    //--------------------------------------------------------------------------
+    // 地形と当たった場合は、ジャンプしてないようにする　④
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
 }
 }    // namespace Game01

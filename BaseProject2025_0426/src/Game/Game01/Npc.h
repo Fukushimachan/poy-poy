@@ -12,12 +12,16 @@ public:
     float3 pos_;
     //! @brief 初期化
     //! @return 初期化済み
-    bool Init() override;
+    bool    Init() override;
+    void    OnHit(const ComponentCollision::HitInfo& hit_info) override;
+    Object* holding_object = NULL;
 
     //! @brief 更新
     void Update() override;
     void Draw() override;
     void Exit() override;
+    bool up_obj     = false;
+    int  _isholding = 0;
 
 private:
     // 必要であれば変数をここに追加する
