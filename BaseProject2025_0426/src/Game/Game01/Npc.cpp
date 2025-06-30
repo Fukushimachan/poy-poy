@@ -19,6 +19,7 @@ namespace Game01 {
 bool Npc::Init()
 {
     Super::Init();
+    _isholding = IDLE;
     SetName("NPC");
     //エネミーのオブジェクト
     SetTranslate({0.0f, 0.0f, 0.0f});
@@ -32,6 +33,7 @@ bool Npc::Init()
     coll->SetRadius(4.0f);
     coll->SetHeight(23.0f);
     coll->UseGravity(true);
+    graund_hit = false;
     //とりあえず十字キーで動く処理
     auto pla_move = this->AddComponent<ComponentObjectController>();
     pla_move->SetMoveSpeed(1.0f);
@@ -57,7 +59,7 @@ bool Npc::Init()
 void Npc::Update()
 {
     Super::Update();
-    pos_     = GetTranslate();
+
     auto npc = Scene::Object::Get<Object>("NPC");
     auto obj = Scene::Object::Get<Cone>("obj");
     if(npc) {
@@ -65,33 +67,29 @@ void Npc::Update()
     }
 
     if(obj) {
-        float3 obj_pos_;
-        float3 obj_dir_move_;
-        float  obj_speed_;
         if(IsKeyOn(KEY_INPUT_P)) {
-            check_key    = true;
-            auto Get_col = obj->GetComponent<ComponentCollisionSphere>();
-            if(count_click % 2 == 1) {
-                obj_pos_.y = pos_npc_.y + 30.0f;
-                obj_pos_.x = 0;
-                obj_pos_.z = 0;
-                obj->SetTranslate(obj_pos_);
-                auto model = GetComponent<ComponentModel>();
-                auto dir   = -model->GetWorldMatrix().axisZ();
-                Get_col->UseGravity(false);
+            check_key = true;
 
-                up_obj = true;
-                // get_coll_obj->
+            if(count_click % 2 == 1) {
+                //// obj_pos_.y = pos_npc_.y + 30.0f;
+                //// obj_pos_.x = 0;
+                //// obj_pos_.z = 0;
+                //// obj->SetTranslate(obj_pos_);
+                //// auto model = GetComponent<ComponentModel>();
+                //// auto dir   = -model->GetWorldMatrix().axisZ();
+                //// Get_col->UseGravity(false);
+                ////
+                //// up_obj = true;
             }
             else if(count_click % 2 == 0) {
-                obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
-                obj->SetTranslate(obj_pos_);
-                auto model = GetComponent<ComponentModel>();
-                auto dir   = -model->GetWorldMatrix().axisZ();
-                obj->SetDirectior(dir * 15);
-                Get_col->UseGravity(true);
-                up_obj = false;
-                //   get_coll_obj->UseGravity(true);
+                //obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+                //obj->SetTranslate(obj_pos_);
+                //auto model = GetComponent<ComponentModel>();
+                //auto dir   = -model->GetWorldMatrix().axisZ();
+                //obj->SetDirectior(dir * 15);
+                //Get_col->UseGravity(true);
+                //up_obj = false;
+                ////   get_coll_obj->UseGravity(true);
             }
         }
         else {
@@ -99,13 +97,35 @@ void Npc::Update()
         }
 
         if(up_obj == false) {
-            obj_speed_ = 1.0f;
-            obj->SetSpeed(obj_speed_);
+            // obj_speed_ = 1.0f;
+            //obj->SetSpeed(obj_speed_);
         }
         if(up_obj == true) {
-            obj_speed_ = 0.0f;
-            SetTranslate({obj_pos_.x + pos_.x, obj_pos_.y, obj_pos_.z + pos_.z});
-            obj->SetSpeed(obj_speed_);
+            //  obj_speed_ = 0.0f;
+            //  SetTranslate({obj_pos_.x + pos_.x, obj_pos_.y, obj_pos_.z + pos_.z});
+            //  obj->SetSpeed(obj_speed_);
+        }
+        if(_isholding == IDLE) {
+        }
+        if(_isholding == HOLDING) {
+            //obj_pos_.y = pos_npc_.y + 30.0f;
+            //obj_pos_.x = 0;
+            //obj_pos_.z = 0;
+            //obj->SetTranslate(obj_pos_);
+            //auto model = GetComponent<ComponentModel>();
+            //auto dir   = -model->GetWorldMatrix().axisZ();
+            //Get_col->UseGravity(false);
+            //
+            //up_obj = true;
+        }
+        if(_isholding == THROWING) {
+            // obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+            // obj->SetTranslate(obj_pos_);
+            // auto model = GetComponent<ComponentModel>();
+            // auto dir   = -model->GetWorldMatrix().axisZ();
+            // obj->SetDirectior(dir * 15);
+            // Get_col->UseGravity(true);
+            // up_obj = false;
         }
         //  obj->AddTranslate(obj_dir_move_ * obj_speed_);
     }
@@ -138,9 +158,65 @@ void Npc::Exit()
 }
 void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
+    //
     __super::OnHit(hit_info);
     auto hit_object = hit_info.hit_collision_->GetOwner();
     printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+
+    auto   obj            = Scene::Object::Get<Cone>("obj");
+    auto   hit_owner_name = hit_info.hit_collision_->GetOwner()->GetName();
+    float3 obj_pos_;
+    float3 obj_dir_move_;
+    float  obj_speed_;
+    auto   Get_col = hit_object->GetComponent<ComponentCollisionSphere>();
+    if(hit_owner_name == "obj") {
+        auto obj_get = hit_object;
+        if(IsKeyOn(KEY_INPUT_P) && _isholding == IDLE) {
+            _isholding = HOLDING;
+        }
+        else if(IsKeyOn(KEY_INPUT_P) && _isholding == HOLDING) {
+            _isholding = THROWING;
+        }
+
+        if(_isholding == IDLE) {
+            count_not_graund_hit_obj = 0;
+        }
+        if(_isholding == HOLDING) {
+            pos_ = GetTranslate();
+            hit_object->SetTranslate({0, 0, pos_npc_.y + 30.0f});
+            //hit_object->SetTranslate(hit_object);
+            auto model = hit_object->GetComponent<ComponentModel>();
+            // auto dir   = -model->GetWorldMatrix().axisZ();
+            Get_col->UseGravity(false);
+
+            up_obj = true;
+        }
+        if(_isholding == THROWING) {
+            graund_hit = true;
+
+            obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+            hit_object->SetTranslate(obj_pos_);
+            auto model = GetComponent<ComponentModel>();
+             auto dir   = -model->GetWorldMatrix().axisZ();
+              obj->SetDirectior(dir * 15);
+            Get_col->UseGravity(true);
+            up_obj = false;
+        }
+        if(up_obj == true) {
+            //  obj_speed_ = 0.0f;
+            hit_object->SetTranslate({pos_.x, pos_npc_.y + 26.0f, pos_.z});
+            //  obj->SetSpeed(obj_speed_);
+        }
+    }
+    if(graund_hit == true) {
+        count_not_graund_hit_obj++;
+    }
+    if(hit_owner_name == "Ground" || count_not_graund_hit_obj > 180) {
+        _isholding = IDLE;
+        graund_hit = false;
+    }
+
+    // hit_object->SetTranslate();
     //--------------------------------------------------------------------------
     // 地形と当たった場合は、ジャンプしてないようにする　④
     //--------------------------------------------------------------------------

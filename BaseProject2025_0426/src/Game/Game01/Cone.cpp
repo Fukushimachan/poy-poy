@@ -28,6 +28,7 @@ bool  Cone::Init()
     coll->SetRadius(radius_);
     //coll->SetHeight(h + 1);
     coll->UseGravity(true);
+    jump_speed_ = 1.0f;
     return true;
 }
 
@@ -54,12 +55,12 @@ void Cone::Update()
         count_click++;
         auto Get_col = GetComponent<ComponentCollisionSphere>();
         if(count_click % 2 == 1) {
-            //  up_obj = true;
+            up_obj = true;
             // Get_col-> UseGravity(false);
         }
         else if(count_click % 2 == 0) {
             // SetSpeed(1.0f);
-            // up_obj = false;
+            up_obj = false;
             //Get_col->UseGravity(true);
         }
     }
@@ -108,6 +109,15 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     if(hit_owner_name == "Ground") {
         // ジャンプを終了する
         is_jump_ = false;
+    }
+
+    if(hit_owner_name == "NPC") {
+        // up_obj = true;
+        // Get_col-> UseGravity(false);
+
+        // SetSpeed(1.0f);
+        // up_obj = false;
+        //Get_col->UseGravity(true);
     }
     //--------------------------------------------------------------------------
 }

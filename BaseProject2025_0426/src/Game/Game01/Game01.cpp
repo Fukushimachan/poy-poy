@@ -31,7 +31,7 @@ void Game01::Update()
 {
     auto object = Scene::Object::Get<Cone>();
     auto npc    = Scene::Object::Get<Npc>();
-    object      = npc->holding_object;
+    //   object      = npc->holding_object;
     // 毎フレーム動作する
 }
 void Game01::Draw()

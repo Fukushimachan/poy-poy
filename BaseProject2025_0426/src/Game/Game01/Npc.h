@@ -13,7 +13,6 @@ public:
     //! @brief 初期化
     //! @return 初期化済み
     bool    Init() override;
-    void    OnHit(const ComponentCollision::HitInfo& hit_info) override;
     Object* holding_object = NULL;
 
     //! @brief 更新
@@ -22,6 +21,15 @@ public:
     void Exit() override;
     bool up_obj     = false;
     int  _isholding = 0;
+    int  count_not_graund_hit_obj;
+    bool graund_hit = false;
+    enum OBJECTSTATE
+    {
+        IDLE,
+        HOLDING,
+        THROWING,
+    };
+    void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
     // 必要であれば変数をここに追加する
