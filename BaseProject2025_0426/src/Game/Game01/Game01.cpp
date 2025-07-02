@@ -12,9 +12,14 @@ bool Game01::Init()
     //Scene::Object::Create<Npc>();
     Scene::Object::Create<Camera>();
     auto npc = Scene::Object::Create<Npc>();
-    // for(int i = 0; i < 10; ++i) {
-    auto object = Scene::Object::Create<Cone>();
-    // }
+    for(int i = 0; i < 10; ++i) {
+        auto   object = Scene::Object::Create<Cone>();
+        float3 pos_;
+        pos_.x = GetRand(100);
+        pos_.y = 1.0f;
+        pos_.z = GetRand(100);
+        object->SetTranslate(pos_);
+    }
     for(int x = 0; x < ground_w_max; ++x) {
         for(int z = 0; z < ground_h_max; ++z) {
             auto ground = Scene::Object::Create<Ground>()->SetName("Ground");

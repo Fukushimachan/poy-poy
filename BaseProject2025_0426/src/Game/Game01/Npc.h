@@ -22,7 +22,9 @@ public:
     bool up_obj     = false;
     int  _isholding = 0;
     int  count_not_graund_hit_obj;
-    bool graund_hit = false;
+    bool graund_hit    = false;
+    int  count_xz_move = 0;
+    bool check(bool check);
     enum OBJECTSTATE
     {
         IDLE,
@@ -32,6 +34,7 @@ public:
     void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
+    bool check_ = false;
     // 必要であれば変数をここに追加する
 };
 }    // namespace Game01

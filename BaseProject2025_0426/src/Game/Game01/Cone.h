@@ -27,11 +27,13 @@ public:
     bool up_obj = false;
     void SetDirectior(float3 dir);
     void SetSpeed(float speed);
+    bool Check();
+    bool check_;
 
 private:
     // ジャンプしていることを示します
-    float3       direction_ = {1, 0, 0};
-    float        speed_     = 0.0f;
+    float3       direction_ = {0, 0, 0};
+    float        speed_     = 1.0f;
     static float radius_;
 
     ComponentCollisionSphereWeakPtr collision_;

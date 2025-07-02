@@ -1,4 +1,5 @@
 ﻿#include "Cone.h"
+#include "Npc.h"
 #include <System/Component/ComponentModel.h>
 #include <System/Component/ComponentCollisionModel.h>
 #include <System/Component/ComponentObjectController.h>
@@ -16,9 +17,13 @@ bool  Cone::Init()
 {
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
-    pos_ = GetTranslate();
+
     // __super::Init();    //Object::Init();と同じ
     Super::Init();
+
+    pos_ = GetTranslate();
+    // pos_.x = GetRand(30);
+    // pos_.z = GetRand(30);
     //position_ = GetTranslate();
     SetName("obj");
     count_click = 0;
@@ -99,25 +104,25 @@ void Cone::Exit()
 
 void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
-    __super::OnHit(hit_info);
+    Super::OnHit(hit_info);
     auto hit_object = hit_info.hit_collision_->GetOwner();
     printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
     //--------------------------------------------------------------------------
     // 地形と当たった場合は、ジャンプしてないようにする　④
     //--------------------------------------------------------------------------
-    auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetName();
+    auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(hit_owner_name == "Ground") {
         // ジャンプを終了する
-        is_jump_ = false;
+        // is_jump_ = false;
     }
-
+    auto npc = Scene::Object::Get<Npc>("NPC");
     if(hit_owner_name == "NPC") {
-        // up_obj = true;
-        // Get_col-> UseGravity(false);
-
-        // SetSpeed(1.0f);
-        // up_obj = false;
-        //Get_col->UseGravity(true);
+        check_ = true;
+        npc->check(check_);
+    }
+    else {
+        check_ = false;
+        npc->check(check_);
     }
     //--------------------------------------------------------------------------
 }
@@ -127,6 +132,12 @@ void Cone::SetDirectior(float3 dir)
 }
 void Cone::SetSpeed(float speed)
 {
-    speed_ = speed;
+    speed_ = 1.0f;
 }
+
+bool Cone::Check()
+{
+    return check_;
+}
+
 }    // namespace Game01
