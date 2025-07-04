@@ -23,6 +23,7 @@ public:
     int  _isholding = 0;
     int  count_not_graund_hit_obj;
     bool graund_hit    = false;
+    int  count = 0;
     int  count_xz_move = 0;
     bool check(bool check);
     enum OBJECTSTATE

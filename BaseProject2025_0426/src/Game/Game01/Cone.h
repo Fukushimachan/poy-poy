@@ -29,6 +29,11 @@ public:
     void SetSpeed(float speed);
     bool Check();
     bool check_;
+    int  Cone_Mode;
+    enum Mode
+    {
+    
+    };
 
 private:
     // ジャンプしていることを示します
