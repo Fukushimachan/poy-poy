@@ -32,7 +32,6 @@ public:
     int  Cone_Mode;
     enum Mode
     {
-    
     };
 
 private:
