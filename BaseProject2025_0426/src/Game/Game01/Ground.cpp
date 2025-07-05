@@ -16,7 +16,7 @@ bool Ground::Init()
     AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1")->UseShader(false);
     AddComponent<ComponentCollisionModel>()->AttachToModel();
     SetScaleAxisXYZ({2.0, 1.0, 2.0});
-    
+
     // __super::Init();    //Object::Init();と同じ
 
     //グラウンドオブジェクト

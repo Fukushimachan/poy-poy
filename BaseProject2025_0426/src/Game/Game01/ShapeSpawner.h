@@ -14,7 +14,7 @@ public:
     void Update() override;
 
 private:
-    float timer_    = 0.0f;    // 経過時間
+    float timer_    = 0.0f;      // 経過時間
     float interval_ = 300.0f;    // 生成間隔（フレーム）
 };
 

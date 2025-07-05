@@ -35,12 +35,10 @@ public:
     float3 throwDirection_{};
     float  throwTimer_ = 0.0f;
 
-
-    
     static const std::vector<SimpleObjects*>& GetAll() { return allObjects_; }
 
 private:
-    ShapeType shape_ = ShapeType::Tetrahedron;
+    ShapeType                          shape_ = ShapeType::Tetrahedron;
     static std::vector<SimpleObjects*> allObjects_;    // 全オブジェクトリスト
 };
 

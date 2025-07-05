@@ -26,7 +26,6 @@ bool Game01::Init()
 
     Scene::Object::Create<ShapeSpawner>();
 
-
     //三角形と球体
     auto obj1 = Scene::Object::Create<SimpleObjects>();
     obj1->SetShape(SimpleObjects::ShapeType::Tetrahedron);
