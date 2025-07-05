@@ -21,7 +21,7 @@ bool  Cone::Init()
     // __super::Init();    //Object::Init();と同じ
     Super::Init();
     Cone_Mode = IDLE;
-    pos_ = GetTranslate();
+    pos_      = GetTranslate();
     // pos_.x = GetRand(30);
     // pos_.z = GetRand(30);
     //position_ = GetTranslate();
@@ -115,18 +115,16 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(hit_owner_name == "Ground") {
         check_ = false;
+        //Cone_Mode = IDLE;
     }
     else {
         check_ = true;
     }
     auto npc = Scene::Object::Get<Npc>("NPC");
     if(hit_owner_name == "NPC") {
-
-        if(npc->count == 0) {
-            Cone_Mode = HOLDING;
-            //  check_ = true;
-            npc->check(check_);
-        }
+        // Cone_Mode = HOLDING;
+        //  check_ = true;
+        npc->check(check_);
     }
     else {
         // check_ = false;

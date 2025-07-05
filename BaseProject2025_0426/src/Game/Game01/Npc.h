@@ -21,12 +21,10 @@ public:
     void Exit() override;
     bool up_obj     = false;
     int  _isholding = 0;
-    int  count_not_graund_hit_obj;
-    bool graund_hit    = false;
-    int  count         = 0;
-    int  count_xz_move = 0;
+
+    int  count = 0;
     bool check(bool check);
-    enum 
+    enum
     {
         IDLE,
         HOLDING,
