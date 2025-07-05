@@ -14,7 +14,7 @@ bool Camera::Init()
 
     //カメラオブジェクト
     auto cam_comp = AddComponent<ComponentCamera>();
-    cam_comp->SetPositionAndTarget({0.0f, 100.0f, +300.0f}, {0.0f, 0.0f, 0.0f});
+    cam_comp->SetPositionAndTarget({0.0f, 150.0f, +300.0f}, {0.0f, 0.0f, 0.0f});
 
     return true;
 }

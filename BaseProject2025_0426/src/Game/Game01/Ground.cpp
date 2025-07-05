@@ -16,7 +16,7 @@ bool Ground::Init()
     // ただし trueを返さなければ Initに何回も来る仕様。
     AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();
-    SetScaleAxisXYZ({4.0, 1.0, 4.0});
+    SetScaleAxisXYZ({20.0, 1.0, 20.0});
     // __super::Init();    //Object::Init();と同じ
 
     //グラウンドオブジェクト

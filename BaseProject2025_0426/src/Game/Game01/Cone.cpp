@@ -35,7 +35,7 @@ bool  Cone::Init()
     coll->UseGravity(true);
     jump_speed_ = 1.0f;
     coll->SetHitCollisionGroup((u32)ComponentCollision::CollisionGroup::ENEMY | (u32)ComponentCollision::CollisionGroup::GROUND |
-                               (u32)ComponentCollision::CollisionGroup::ITEM);
+                               (u32)ComponentCollision::CollisionGroup::ITEM | (u32)ComponentCollision::CollisionGroup::WALL);
     return true;
 }
 

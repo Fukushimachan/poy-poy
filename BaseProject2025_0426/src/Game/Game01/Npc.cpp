@@ -121,9 +121,8 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
     if(IsKeyOn(KEY_INPUT_P) && _isholding == IDLE && obj->Cone_Mode == IDLE) {
         if(hit_owner_name2 == "obj") {
             auto hit_object = hit_info.hit_collision_->GetOwner();
-            //const std::string eff = "data/Sample/Effects/Laser01.efkefc";
-            obj->Cone_Mode = HOLDING;
-            _isholding     = HOLDING;
+            obj->Cone_Mode  = HOLDING;
+            _isholding      = HOLDING;
             npc_move_get->SetMoveSpeed(0.0f);
             count = 1;
         }

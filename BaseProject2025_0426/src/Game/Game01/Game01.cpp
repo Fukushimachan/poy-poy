@@ -3,8 +3,10 @@
 #include "Camera.h"
 #include "Ground.h"
 #include "Cone.h"
+#include "Walls.h"
 //! @brief 初期化
 //! @return 初期化済み
+
 namespace Game01 {
 
 bool Game01::Init()
@@ -20,14 +22,12 @@ bool Game01::Init()
         pos_.z = GetRand(100);
         object->SetTranslate(pos_);
     }
-    for(int x = 0; x < ground_w_max; ++x) {
-        for(int z = 0; z < ground_h_max; ++z) {
-            auto ground = Scene::Object::Create<Ground>()->SetName("Ground");
 
-            ground->SetTranslate(
-                {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size / 2});
-        }
-    }
+    auto ground = Scene::Object::Create<Ground>()->SetName("Ground");
+
+    ground->SetTranslate({0.0f, 0.0f, 0.0f});
+    auto walls = Scene::Object::Create<Walls>()->SetName("Walls");
+ //   memory_pos_wall = walls->GetTranslate();
     return true;
 }
 
@@ -36,6 +36,30 @@ void Game01::Update()
 {
     auto object = Scene::Object::Get<Cone>();
     auto npc    = Scene::Object::Get<Npc>();
+   
+    auto wall    = Scene::Object::Get<Walls>();
+   
+
+    //wall->SetTranslate(memory_pos_wall); 
+
+    //float3 pos[4];
+    //float  r_size_half = 5.0;
+    //pos[0]             = {100.0f, r_size_half*2, -100.0f};
+    //pos[1]             = {-100.0f, r_size_half*2, 100.0f};
+    //pos[2]             = {-100.0f, r_size_half * 2, -100.0f};
+    //pos[3]             = {-100.0f, r_size_half * 2, -100.0f};
+    //float3 rot[4];
+    //rot[0] = {90.0f, 0.0f, 0.0f};
+    //rot[1] = {90.0f, 90.0f, 0.0f};
+    //rot[2] = {90.0f, 0.0f, 0.0f};
+    //rot[3] = {90.0f, 90.0f, 0.0f};
+    //for(int i = 0; i < 4; ++i) {
+    //
+
+    //    wall->SetTranslate(pos[0]);
+    //    //wall->SetScaleAxisXYZ({1.0f, 10.0f, 10.0f});
+    //    wall->SetRotationAxisXYZ(rot[0]);
+    //}
     //   object      = npc->holding_object;
     // 毎フレーム動作する
 }
