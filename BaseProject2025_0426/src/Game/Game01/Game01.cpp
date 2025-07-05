@@ -45,4 +45,40 @@ void Game01::Draw()
 void Game01::Exit()
 {
 }
+
+//---------------------------------------------------------------------------------
+//	度をラジアンに変換する関数
+//---------------------------------------------------------------------------------
+float TO_RADIAN(float degree)
+{
+    return degree * 3.14159265f / 180.0f;
+}
+//---------------------------------------------------------------------------------
+//	ラジアンを度に変換する関数
+//---------------------------------------------------------------------------------
+float TO_DEGREE(float radian)
+{
+    return radian * 180.0f / 3.14159265f;
+}
+void DrawCircle3D_XZ(float3 center, float radius, int color, bool fill)
+{
+    VECTOR pos1;
+    VECTOR pos2;
+    for(int i = 0; i < 36; i++) {
+        pos1.x = center.x + radius * sinf(TO_RADIAN(i * 10.0f));
+        pos1.y = center.y;
+        pos1.z = center.z + radius * cosf(TO_RADIAN(i * 10.0f));
+
+        pos2.x = center.x + radius * sinf(TO_RADIAN((i + 1) * 10.0f));
+        pos2.y = center.y;
+        pos2.z = center.z + radius * cosf(TO_RADIAN((i + 1) * 10.0f));
+
+        if(fill) {
+            DrawTriangle3D(cast(center), pos1, pos2, color, TRUE);
+        }
+        else {
+            DrawLine3D(pos1, pos2, color);
+        }
+    }
+}
 }    // namespace Game01

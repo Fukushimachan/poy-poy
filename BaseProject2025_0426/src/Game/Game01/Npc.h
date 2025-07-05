@@ -26,7 +26,7 @@ public:
     int  count         = 0;
     int  count_xz_move = 0;
     bool check(bool check);
-    enum OBJECTSTATE
+    enum 
     {
         IDLE,
         HOLDING,

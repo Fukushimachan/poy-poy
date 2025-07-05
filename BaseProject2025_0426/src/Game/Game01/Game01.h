@@ -25,8 +25,11 @@ public:
     void Update() override;
     void Draw() override;
     void Exit() override;
+    float TO_DEGREE(float radian);
+    float TO_RADIAN(float degree);
 
-private:
+        void DrawCircle3D_XZ(float3 center, float radius, int color, bool fill);
+    private:
     // 必要であれば変数をここに追加する
 };
 }    // namespace Game01
