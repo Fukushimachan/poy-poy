@@ -10,20 +10,35 @@ namespace Game01 {
 
 bool Npc::Init()
 {
+    // 最初に1回動作する
+    // ただし trueを返さなければ Initに何回も来る仕様。
+
+    // __super::Init();    //Object::Init();と同じ
     Super::Init();
-    SetName("NPC");
-    //エネミーのオブジェクト
+
+    //グラウンドオブジェクト
+
+    //グラウンドオブジェクト
+    // auto ground = Scene::Object::Create<Object>();
+    // /*this->*/ SetName("Ground");    //this->はつけてもつけなくてもいい
+    /*this->*/
+    // /*this->*/ AddComponent<ComponentCollisionModel>()->AttachToModel();    //
     SetTranslate({0.0f, 0.0f, 0.0f});
     auto enemy = AddComponent<ComponentModel>("data/Sample/Enemy/Model.mv1");
     enemy->SetAnimation({
+        //    //{"Attack", "data/Sample/Enemy/Anim/Attack.mv1", 1, 1.0f},
         {"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
+        //    {"Death", "data/Sample/Enemy/Anim/Death.mv1", 0, 1.0f},
+        //    //	{"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
     });
-    //コリジョンの追加
+    // enemy->PlayAnimation("walk", TRUE);
+    //auto move = this->AddComponent<ComponentObjectController>();
     auto coll = AddComponent<ComponentCollisionCapsule>();
     coll->SetRadius(4.0f);
     coll->SetHeight(23.0f);
     coll->UseGravity(true);
-    //とりあえず十字キーで動く処理
+    //move->SetMoveSpeed(0.3f);
+    //move->SetRotateSpeed(20.0f);
     auto pla_move = this->AddComponent<ComponentObjectController>();
     pla_move->SetMoveSpeed(1.0f);
     pla_move->SetRotateSpeed(20.0f);
@@ -40,7 +55,7 @@ bool Npc::Init()
 void Npc::Update()
 {
     Super::Update();
-    pos_ = GetTranslate();
+
     // 毎フレーム動作する
 }    // namespace Game01
 
@@ -60,8 +75,13 @@ void Npc::Draw()
         float3 curr_pos = pos + (vx * x) + (vy * y);
 
         DxLib::DrawLine3D(cast(prev_pos), cast(curr_pos), GetColor(0, 255, 255));
+        //  DxLib::DrawLine3D(cast(prev_pos1), cast(curr_pos1), color);
+        //DxLib::DrawLine3D(cast(prev_pos2), cast(curr_pos2), color);
         prev_pos = curr_pos;
+        //prev_pos2 = curr_pos2;
+        //prev_pos1 = curr_pos1;
     }
+    //DrawSphere3D(cast(pos), 150,10, GetColor(0, 255, 255), GetColor(0, 255, 255), TRUE);
 }
 
 void Npc::Exit()

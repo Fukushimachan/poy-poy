@@ -10,7 +10,6 @@ class Npc : public Object
 public:
     BP_OBJECT_DECL(Npc, u8"Groundのシーン");
 
-    float3 pos_;
     //! @brief 初期化
     //! @return 初期化済み
     bool Init() override;
