@@ -15,10 +15,11 @@ bool Camera::Init()
 
     // __super::Init();    //Object::Init();と同じ
     Super::Init();
+    SetName("Camera");
 
     //グラウンドオブジェクト
     auto cam_comp = AddComponent<ComponentCamera>();
-    cam_comp->SetPositionAndTarget({0.0f, 100.0f, +300.0f}, {0.0f, 0.0f, 0.0f});
+    cam_comp->SetPositionAndTarget({0.0f, 60.0f, 170.0f}, {0.0f, 0.0f, 0.0f});
 
     //auto cam_lock = AddComponent<ComponentSpringArm>();
     // cam_lock->SetSpringArmObject("Player");

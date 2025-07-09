@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Ground.h"
 #include "Player.h"
+#include "ShapeSpawner.h"
 #include "SimpleObjects.h"
 //! @brief 初期化
 //! @return 初期化済み
@@ -10,7 +11,18 @@ namespace Game01 {
 
 bool Game01::Init()
 {
+   
+    SetUseLighting(TRUE);
+    SetLightEnable(TRUE);
 
+    
+    SetLightDirection(VGet(-1.0f, -1.0f, -1.0f));
+
+    
+    SetLightDifColor({0.8f, 0.8f, 0.8f, 1.0f});    
+
+    
+    SetLightAmbColor({0.4f, 0.4f, 0.4f, 1.0f});    
 
 
     Scene::Object::Create<Camera>();
@@ -22,12 +34,14 @@ bool Game01::Init()
                 {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size / 2});
         }
     }
-   
+
 
 
     //プレイヤー
     Scene::Object::Create<Player>();
-    
+
+    Scene::Object::Create<ShapeSpawner>();
+
     //三角形と球体
     auto obj1 = Scene::Object::Create<SimpleObjects>();
     obj1->SetShape(SimpleObjects::ShapeType::Tetrahedron);
@@ -37,10 +51,19 @@ bool Game01::Init()
     obj2->SetShape(SimpleObjects::ShapeType::Sphere);
     obj2->SetTranslate({20.0f, 60.0f, 0.0f});
 
-    
-    
-    
-    
+    // -----------------------------------------------------------------------------------------
+    // 空オブジェクト(SkyDome)の追加 ④
+    // -----------------------------------------------------------------------------------------
+    {
+        auto obj = Scene::Object::Create<Object>()    //< Object作成
+                       ->SetName("Sky");
+
+        // オブジェクトにモデル能力を追加します
+        obj->AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/Stage00_sky.mv1");
+        obj->SetTranslate({0, -300.0f, 0});
+    }
+
+
     return true;
 }
 
@@ -48,6 +71,14 @@ bool Game01::Init()
 void Game01::Update()
 {
     // 毎フレーム動作する
+    //--------------------------------------------------------------
+    // 雲を動かすように空をY軸で少しづつ回転させます　⑤
+    //--------------------------------------------------------------
+    if(auto sky = Scene::Object::Get<Object>("Sky")) {
+        sky->AddRotationAxisXYZ({0, 0.1f, 0});
+    }
+    //--------------------------------------------------------------
+
 }
 void Game01::Draw()
 {

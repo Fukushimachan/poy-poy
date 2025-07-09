@@ -101,6 +101,8 @@ void ComponentModel::Load(std::string_view path)
 //---------------------------------------------------------------------------
 void ComponentModel::Init()
 {
+
+
     // 親クラス
     Super::Init();
 }
@@ -109,6 +111,8 @@ void ComponentModel::Init()
 //! @param delta 1フレームの秒数
 void ComponentModel::Update()
 {
+
+
     float delta = GetDeltaTime();
 
     // モデルが存在しているならばTransform設定を行う
@@ -145,6 +149,23 @@ void ComponentModel::Update()
 //! @brief モデル描画
 void ComponentModel::Draw()
 {
+    // 毎フレーム光源を有効にする
+    SetUseLighting(TRUE);
+    SetLightEnable(TRUE);
+    SetLightDirection(VGet(-1.0f, -1.0f, -1.0f));
+    SetLightDifColor({0.8f, 0.8f, 0.8f, 1.0f});
+    SetLightAmbColor({0.4f, 0.4f, 0.4f, 1.0f});
+
+    // モデルが初期化されていない場合は描画しない
+    if(!model_status_.is(ModelBit::Initialized))
+        return;
+
+    // シェーダーを使用するかどうかを設定
+    model_->useShader(model_status_.is(ModelBit::UseShader));
+
+    // モデルを描画
+    model_->render();
+  
     if(!model_status_.is(ModelBit::Initialized))
         return;
 
