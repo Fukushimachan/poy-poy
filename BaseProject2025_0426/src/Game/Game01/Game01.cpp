@@ -11,19 +11,14 @@ namespace Game01 {
 
 bool Game01::Init()
 {
-   
     SetUseLighting(TRUE);
     SetLightEnable(TRUE);
 
-    
     SetLightDirection(VGet(-1.0f, -1.0f, -1.0f));
 
-    
-    SetLightDifColor({0.8f, 0.8f, 0.8f, 1.0f});    
+    SetLightDifColor({0.8f, 0.8f, 0.8f, 1.0f});
 
-    
-    SetLightAmbColor({0.4f, 0.4f, 0.4f, 1.0f});    
-
+    SetLightAmbColor({0.4f, 0.4f, 0.4f, 1.0f});
 
     Scene::Object::Create<Camera>();
     Scene::Object::Create<Npc>();
@@ -34,8 +29,6 @@ bool Game01::Init()
                 {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size / 2});
         }
     }
-
-
 
     //プレイヤー
     Scene::Object::Create<Player>();
@@ -63,7 +56,6 @@ bool Game01::Init()
         obj->SetTranslate({0, -300.0f, 0});
     }
 
-
     return true;
 }
 
@@ -78,7 +70,6 @@ void Game01::Update()
         sky->AddRotationAxisXYZ({0, 0.1f, 0});
     }
     //--------------------------------------------------------------
-
 }
 void Game01::Draw()
 {

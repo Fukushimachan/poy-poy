@@ -13,9 +13,7 @@ public:
 
     void Update() override;
 
-    
 private:
-
     bool is_grounded_ = false;    // 地面にいるか
 };
 }    // namespace Game01

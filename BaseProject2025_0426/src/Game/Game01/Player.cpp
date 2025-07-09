@@ -83,7 +83,5 @@ void Player::Update()
             }
         }
     }
-
-
 }
 }    // namespace Game01

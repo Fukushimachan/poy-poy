@@ -78,11 +78,11 @@ void SimpleObjects::Update()
     if(isThrown_) {
         if(throwTimer_ > 0.0f) {
             SetTranslate(GetTranslate() + throwDirection_ * 0.1f);
-            throwDirection_.y -= 0.1f;     
-            throwTimer_       -= 0.02f;    
+            throwDirection_.y -= 0.1f;
+            throwTimer_       -= 0.02f;
         }
         else {
-            isThrown_ = false;    
+            isThrown_ = false;
         }
     }
 }
@@ -93,7 +93,7 @@ void SimpleObjects::Lift()
     isThrown_  = false;
 
     if(auto col = GetComponent<ComponentCollisionCapsule>()) {
-        col->UseGravity(false);    
+        col->UseGravity(false);
     }
 }
 

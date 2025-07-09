@@ -101,8 +101,6 @@ void ComponentModel::Load(std::string_view path)
 //---------------------------------------------------------------------------
 void ComponentModel::Init()
 {
-
-
     // 親クラス
     Super::Init();
 }
@@ -111,8 +109,6 @@ void ComponentModel::Init()
 //! @param delta 1フレームの秒数
 void ComponentModel::Update()
 {
-
-
     float delta = GetDeltaTime();
 
     // モデルが存在しているならばTransform設定を行う
@@ -165,7 +161,7 @@ void ComponentModel::Draw()
 
     // モデルを描画
     model_->render();
-  
+
     if(!model_status_.is(ModelBit::Initialized))
         return;
 
