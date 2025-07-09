@@ -10,18 +10,12 @@ namespace Game01 {
 
 bool Camera::Init()
 {
-    // 最初に1回動作する
-    // ただし trueを返さなければ Initに何回も来る仕様。
-
-    // __super::Init();    //Object::Init();と同じ
     Super::Init();
 
-    //グラウンドオブジェクト
+    //カメラオブジェクト
     auto cam_comp = AddComponent<ComponentCamera>();
     cam_comp->SetPositionAndTarget({0.0f, 100.0f, +300.0f}, {0.0f, 0.0f, 0.0f});
 
-    //auto cam_lock = AddComponent<ComponentSpringArm>();
-    // cam_lock->SetSpringArmObject("Player");
     return true;
 }
 

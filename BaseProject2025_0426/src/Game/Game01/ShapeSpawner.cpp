@@ -1,5 +1,5 @@
 ﻿#include "ShapeSpawner.h"
-#include "SimpleObjects.h"  
+#include "SimpleObjects.h"
 #include "Player.h"
 #include <System/Time.h>
 #include <DxLib.h>
@@ -40,7 +40,6 @@ void ShapeSpawner::Update()
             obj->SetShape(SimpleObjects::ShapeType::Sphere);
         }
     }
-   
 }
 
 }    // namespace Game01

@@ -52,7 +52,7 @@ void Player::Update()
     DrawTriangle3D(top, right, front, color, TRUE);
     DrawTriangle3D(front, right, left, color, TRUE);
 
-   if(CheckHitKey(KEY_INPUT_SPACE)) {
+    if(CheckHitKey(KEY_INPUT_SPACE)) {
         auto&          objects      = SimpleObjects::GetAll();
         SimpleObjects* liftedObject = nullptr;
 

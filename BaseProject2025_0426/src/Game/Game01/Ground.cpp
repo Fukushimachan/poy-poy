@@ -13,10 +13,9 @@ bool Ground::Init()
     Super::Init();
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
-    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1")->UseShader(false);
+    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();
     SetScaleAxisXYZ({2.0, 1.0, 2.0});
-    
     // __super::Init();    //Object::Init();と同じ
 
     //グラウンドオブジェクト
