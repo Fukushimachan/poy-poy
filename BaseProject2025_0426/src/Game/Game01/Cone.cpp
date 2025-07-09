@@ -95,7 +95,7 @@ void Cone::Draw()
     Super::Draw();
 
     auto scale = GetScaleAxisXYZ();
-    auto color = GetColor(255, 255, 255);
+    auto color = GetColor(0, 0, 0);
     auto pos   = GetTranslate();
     DrawSphere3D(cast(pos), 5, 20, color, color, TRUE);
 }
@@ -108,27 +108,44 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
     auto hit_object = hit_info.hit_collision_->GetOwner();
-    printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+  //  printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
     //--------------------------------------------------------------------------
     // 地形と当たった場合は、ジャンプしてないようにする　④
     //--------------------------------------------------------------------------
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
-    if(hit_owner_name == "Ground") {
+    if(hit_owner_name == "Ground"  && Cone_Mode != HOLDING) {
         check_ = false;
-        //Cone_Mode = IDLE;
+        Cone_Mode = IDLE;
+        printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+
     }
     else {
         check_ = true;
     }
     auto npc = Scene::Object::Get<Npc>("NPC");
     if(hit_owner_name == "NPC") {
+        printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+
         // Cone_Mode = HOLDING;
         //  check_ = true;
         npc->check(check_);
+        Cone_Mode = HOLDING;
     }
     else {
         // check_ = false;
         npc->check(check_);
+    }
+    if(hit_owner_name != "NPC" && hit_owner_name != "Ground") {
+       // Cone_Mode = THROWING;
+
+    }
+    if(hit_owner_name == "Wall") {
+        direction_ = 0;
+        //Cone_Mode = IDLE;
+    }
+    else {
+        // check_ = false;
+      
     }
     //--------------------------------------------------------------------------
 }

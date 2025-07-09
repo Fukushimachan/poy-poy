@@ -22,6 +22,7 @@ public:
     bool up_obj     = false;
     int  _isholding = 0;
 
+    int  throwing_time = 0;
     int  count = 0;
     bool check(bool check);
     enum

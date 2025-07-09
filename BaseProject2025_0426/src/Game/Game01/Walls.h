@@ -14,11 +14,14 @@ public:
     bool Init() override;
 
     //! @brief 更新
-    void Update() override;
-    void Draw() override;
-    void Exit() override;
+    void   Update() override;
+    void   Draw() override;
+    void   Exit() override;
+    float3 pos[4][4];
 
 private:
+    void OnHit(const ComponentCollision::HitInfo& hit_info) override;
+
     // 必要であれば変数をここに追加する
 };
 }    // namespace Game01

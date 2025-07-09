@@ -6,10 +6,9 @@
 //! @brief 初期化
 //! @return 初期化済み
 
-
 namespace Game01 {
 float3 memory_pos_wall;
-bool Wall::Init()
+bool   Wall::Init()
 {
     Super::Init();
     SetName("Wall");
@@ -17,10 +16,13 @@ bool Wall::Init()
     /* AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();*/
     auto coll = AddComponent<ComponentCollisionCapsule>();
+    /*std::vector<ObjectPtr> *wallVector = new std::vector<ObjectPtr>();
+    wallVector->push_back(coll);
+    auto a = wallVector[0];*/
     coll->SetRadius(5.0f);
     coll->SetHeight(200.0f);
     coll->SetCollisionGroup(ComponentCollision::CollisionGroup::WALL);
-   // memory_pos_wall = GetTranslate();
+    // memory_pos_wall = GetTranslate();
     return true;
 }
 
@@ -29,10 +31,10 @@ void Wall::Update()
 {
     // 毎フレーム動作する
     Super::Update();
-    auto wall    = Scene::Object::Get<Wall>();
-  //  auto get_pos = GetTranslate();
+    auto wall = Scene::Object::Get<Wall>();
+    //  auto get_pos = GetTranslate();
 
-  //  SetTranslate(memory_pos_wall);  
+    //  SetTranslate(memory_pos_wall);
     //float3 pos[4];
     //float  r_size_half = 5.0;
     //pos[0]             = {100.0f, r_size_half * 2, -100.0f};

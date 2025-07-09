@@ -1,8 +1,9 @@
 ﻿#include "Game01.h"
+#include "Cone.h"
 #include "Npc.h"
 #include "Camera.h"
 #include "Ground.h"
-#include "Cone.h"
+
 #include "Walls.h"
 //! @brief 初期化
 //! @return 初期化済み
@@ -27,7 +28,7 @@ bool Game01::Init()
 
     ground->SetTranslate({0.0f, 0.0f, 0.0f});
     auto walls = Scene::Object::Create<Walls>()->SetName("Walls");
- //   memory_pos_wall = walls->GetTranslate();
+    //   memory_pos_wall = walls->GetTranslate();
     return true;
 }
 
@@ -36,11 +37,10 @@ void Game01::Update()
 {
     auto object = Scene::Object::Get<Cone>();
     auto npc    = Scene::Object::Get<Npc>();
-   
-    auto wall    = Scene::Object::Get<Walls>();
-   
 
-    //wall->SetTranslate(memory_pos_wall); 
+    auto wall = Scene::Object::Get<Walls>();
+
+    //wall->SetTranslate(memory_pos_wall);
 
     //float3 pos[4];
     //float  r_size_half = 5.0;

@@ -39,6 +39,7 @@ bool Npc::Init()
     auto pla_move = AddComponent<ComponentObjectController>();
     pla_move->SetMoveSpeed(1.0f);
     pla_move->SetRotateSpeed(20.0f);
+
     coll->SetCollisionGroup(ComponentCollision::CollisionGroup::ENEMY);
 
     auto npc = Scene::Object::Get<Object>("NPC");
@@ -62,7 +63,9 @@ void Npc::Update()
 {
     Super::Update();
 
-    auto npc = Scene::Object::Get<Object>("NPC");
+    auto npc          = Scene::Object::Get<Object>("NPC");
+    auto npc_move_get = GetComponent<ComponentObjectController>();
+
     auto obj = Scene::Object::Get<Cone>("obj");
     if(npc) {
         pos_npc_ = npc->GetTranslate();
@@ -107,75 +110,84 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
 
-    //printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
-    auto npc_move_get    = GetComponent<ComponentObjectController>();
+   auto npc_move_get    = GetComponent<ComponentObjectController>();
     auto obj             = Scene::Object::Get<Cone>("obj");
-    auto Obj             = Scene::Object::Get<Object>("obj");
+   // auto Obj             = Scene::Object::Get<Object>("obj");
     auto hit_owner_name  = hit_info.hit_collision_->GetOwner()->GetName();
     auto hit_owner_name2 = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(obj->check_ == false && _isholding != HOLDING) {
         _isholding     = IDLE;
-        obj->Cone_Mode = IDLE;
+       // obj->Cone_Mode = IDLE;
     }
 
     if(IsKeyOn(KEY_INPUT_P) && _isholding == IDLE && obj->Cone_Mode == IDLE) {
         if(hit_owner_name2 == "obj") {
             auto hit_object = hit_info.hit_collision_->GetOwner();
-            obj->Cone_Mode  = HOLDING;
+          
             _isholding      = HOLDING;
             npc_move_get->SetMoveSpeed(0.0f);
             count = 1;
         }
     }
-    else if(IsKeyOn(KEY_INPUT_P) && _isholding == HOLDING && obj->Cone_Mode == HOLDING) {
+    else if(IsKeyOn(KEY_INPUT_O) && _isholding == HOLDING && obj->Cone_Mode == HOLDING) {
         if(hit_owner_name2 == "obj") {
             _isholding = THROWING;
+            obj->Cone_Mode = THROWING;
         }
     }
 
     if(obj->Cone_Mode == IDLE) {
         obj->SetDirectior(0 * 15);
+
     }
 
     if(_isholding == HOLDING) {
-        if(count == 1) {
-            if(obj->Cone_Mode == HOLDING) {
+      
+        auto hit_object = hit_info.hit_collision_->GetOwner();
+        if(hit_object) {
+                //if(hit_owner_name2 == "obj") {
                 if(hit_owner_name2 == "obj") {
-                    auto hit_object = hit_info.hit_collision_->GetOwner();
+                
                     auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
 
                     auto obj_get = hit_object;
                     pos_         = GetTranslate();
                     hit_object->SetTranslate({0, 0, pos_npc_.y + 25.0f});
-                    Get_col->UseGravity(false);
-                }
+                   
+                        Get_col->UseGravity(false);
+                    }
 
                 up_obj = true;
             }
-        }
+    
         npc_move_get->SetMoveSpeed(1.0f);
     }
 
     if(_isholding == THROWING) {
-        count = 0;
+        if(obj->Cone_Mode == THROWING) {
+            count = 0;
+            throwing_time++;
+            float3 obj_pos_;
+            if(hit_owner_name2 == "obj") {
+                auto hit_object = hit_info.hit_collision_->GetOwner();
+                auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
+                auto obj_get    = hit_object;
 
-        float3 obj_pos_;
-        if(hit_owner_name2 == "obj") {
-            auto hit_object = hit_info.hit_collision_->GetOwner();
-            auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
-            auto obj_get    = hit_object;
+                obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
 
-            obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+                hit_object->SetTranslate(obj_pos_);
+                auto model = GetComponent<ComponentModel>();
+                auto dir   = -model->GetWorldMatrix().axisZ();
+                obj->SetDirectior(dir * 15);
 
-            hit_object->SetTranslate(obj_pos_);
-            auto model = GetComponent<ComponentModel>();
-            auto dir   = -model->GetWorldMatrix().axisZ();
-            obj->SetDirectior(dir * 15);
-
-            //if(count_xz_move > 60) {
-            Get_col->UseGravity(true);
-            // }
-            up_obj = false;
+                Get_col->UseGravity(true);
+                up_obj = false;
+            }
+            if(throwing_time > 90) {
+                _isholding     = IDLE;
+                throwing_time  = 0;
+                //obj->Cone_Mode = IDLE;
+            }
         }
     }
     if(up_obj == true) {
