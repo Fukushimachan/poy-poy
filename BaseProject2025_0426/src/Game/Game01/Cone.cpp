@@ -108,16 +108,16 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
     auto hit_object = hit_info.hit_collision_->GetOwner();
-  //  printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
+    auto getname    = hit_info.hit_collision_->GetName();
+    //  printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
     //--------------------------------------------------------------------------
     // 地形と当たった場合は、ジャンプしてないようにする　④
     //--------------------------------------------------------------------------
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
-    if(hit_owner_name == "Ground"  && Cone_Mode != HOLDING) {
-        check_ = false;
+    if(hit_owner_name == "Ground") {
+        check_    = false;
         Cone_Mode = IDLE;
         printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
-
     }
     else {
         check_ = true;
@@ -132,12 +132,10 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
         Cone_Mode = HOLDING;
     }
     else {
-        // check_ = false;
         npc->check(check_);
     }
     if(hit_owner_name != "NPC" && hit_owner_name != "Ground") {
-       // Cone_Mode = THROWING;
-
+        // Cone_Mode = THROWING;
     }
     if(hit_owner_name == "Wall") {
         direction_ = 0;
@@ -145,7 +143,6 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     }
     else {
         // check_ = false;
-      
     }
     //--------------------------------------------------------------------------
 }
@@ -155,7 +152,7 @@ void Cone::SetDirectior(float3 dir)
 }
 void Cone::SetSpeed(float speed)
 {
-    speed_ = 1.0f;
+    speed_ = speed;
 }
 
 bool Cone::Check()

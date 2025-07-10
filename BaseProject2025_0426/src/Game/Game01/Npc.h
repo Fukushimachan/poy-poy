@@ -23,7 +23,7 @@ public:
     int  _isholding = 0;
 
     int  throwing_time = 0;
-    int  count = 0;
+    int  count         = 0;
     bool check(bool check);
     enum
     {

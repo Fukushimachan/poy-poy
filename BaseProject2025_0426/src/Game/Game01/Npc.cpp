@@ -110,56 +110,48 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
 
-   auto npc_move_get    = GetComponent<ComponentObjectController>();
-    auto obj             = Scene::Object::Get<Cone>("obj");
-   // auto Obj             = Scene::Object::Get<Object>("obj");
+    auto npc_move_get = GetComponent<ComponentObjectController>();
+    auto obj          = Scene::Object::Get<Cone>("obj");
     auto hit_owner_name  = hit_info.hit_collision_->GetOwner()->GetName();
     auto hit_owner_name2 = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(obj->check_ == false && _isholding != HOLDING) {
         _isholding     = IDLE;
-       // obj->Cone_Mode = IDLE;
+        obj->Cone_Mode = IDLE;
     }
-
     if(IsKeyOn(KEY_INPUT_P) && _isholding == IDLE && obj->Cone_Mode == IDLE) {
         if(hit_owner_name2 == "obj") {
             auto hit_object = hit_info.hit_collision_->GetOwner();
-          
-            _isholding      = HOLDING;
+
+            _isholding = HOLDING;
             npc_move_get->SetMoveSpeed(0.0f);
             count = 1;
         }
     }
     else if(IsKeyOn(KEY_INPUT_O) && _isholding == HOLDING && obj->Cone_Mode == HOLDING) {
         if(hit_owner_name2 == "obj") {
-            _isholding = THROWING;
+            _isholding     = THROWING;
             obj->Cone_Mode = THROWING;
         }
     }
 
     if(obj->Cone_Mode == IDLE) {
         obj->SetDirectior(0 * 15);
-
     }
 
     if(_isholding == HOLDING) {
-      
         auto hit_object = hit_info.hit_collision_->GetOwner();
-        if(hit_object) {
-                //if(hit_owner_name2 == "obj") {
-                if(hit_owner_name2 == "obj") {
-                
-                    auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
+        if(obj->Cone_Mode == HOLDING) {
+            if(hit_owner_name2 == "obj") {
+                auto Get_col = hit_object->GetComponent<ComponentCollisionSphere>();
 
-                    auto obj_get = hit_object;
-                    pos_         = GetTranslate();
-                    hit_object->SetTranslate({0, 0, pos_npc_.y + 25.0f});
-                   
-                        Get_col->UseGravity(false);
-                    }
+                auto obj_get = hit_object;
+                  hit_object->SetTranslate({0, 0, pos_npc_.y + 25.0f});
 
-                up_obj = true;
+                Get_col->UseGravity(false);
             }
-    
+        }
+        up_obj = true;
+
         npc_move_get->SetMoveSpeed(1.0f);
     }
 
@@ -184,9 +176,8 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
                 up_obj = false;
             }
             if(throwing_time > 90) {
-                _isholding     = IDLE;
-                throwing_time  = 0;
-                //obj->Cone_Mode = IDLE;
+                _isholding    = IDLE;
+                throwing_time = 0;
             }
         }
     }
