@@ -36,10 +36,11 @@ public:
         HOLDING,
         THROWING,
     };
+    float3 direction_;
 
 private:
     // ジャンプしていることを示します
-    float3       direction_ = {0, 0, 0};
+   
     float        speed_     = 1.0f;
     static float radius_;
 

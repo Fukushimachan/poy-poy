@@ -8,11 +8,14 @@ float3  position_;
 float3  pos_;
 float3  npc_pos;
 Object* _owner;
+
+
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
 //float Cone::speed_    = 1.0f;
 float Cone::radius_ = 5.0f;
+//float3 Cone::direction_ = {0, 0, 0};
 bool  Cone::Init()
 {
     // 最初に1回動作する
@@ -115,8 +118,9 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     //--------------------------------------------------------------------------
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(hit_owner_name == "Ground") {
-        check_    = false;
-        Cone_Mode = IDLE;
+        
+        check_ = false;
+        // Cone_Mode = IDLE;
         printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
     }
     else {
@@ -124,12 +128,13 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     }
     auto npc = Scene::Object::Get<Npc>("NPC");
     if(hit_owner_name == "NPC") {
+        _owner = hit_info.collision_->GetOwner();
         printfDx("HIT: %s\n", hit_object->GetNameDefault().data());
 
         // Cone_Mode = HOLDING;
         //  check_ = true;
         npc->check(check_);
-        Cone_Mode = HOLDING;
+        // Cone_Mode = HOLDING;
     }
     else {
         npc->check(check_);

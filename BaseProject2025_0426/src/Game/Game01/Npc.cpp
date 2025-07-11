@@ -107,11 +107,12 @@ bool Npc::check(bool check)
     return check_;
 }
 void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
+
 {
     Super::OnHit(hit_info);
 
-    auto npc_move_get = GetComponent<ComponentObjectController>();
-    auto obj          = Scene::Object::Get<Cone>("obj");
+    auto npc_move_get    = GetComponent<ComponentObjectController>();
+    auto obj             = Scene::Object::Get<Cone>("obj");
     auto hit_owner_name  = hit_info.hit_collision_->GetOwner()->GetName();
     auto hit_owner_name2 = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(obj->check_ == false && _isholding != HOLDING) {
@@ -119,16 +120,28 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
         obj->Cone_Mode = IDLE;
     }
     if(IsKeyOn(KEY_INPUT_P) && _isholding == IDLE && obj->Cone_Mode == IDLE) {
-        if(hit_owner_name2 == "obj") {
+        if(hit_owner_name == "obj") {
             auto hit_object = hit_info.hit_collision_->GetOwner();
-
-            _isholding = HOLDING;
+            obj->Cone_Mode  = HOLDING;
+            _isholding      = HOLDING;
             npc_move_get->SetMoveSpeed(0.0f);
             count = 1;
         }
+        if(hit_owner_name == "obj_1") {
+            auto hit_object = hit_info.hit_collision_->GetOwner();
+            obj->Cone_Mode  = HOLDING;
+            _isholding      = HOLDING;
+            npc_move_get->SetMoveSpeed(0.0f);
+            count = 1;
+        }
+       
     }
     else if(IsKeyOn(KEY_INPUT_O) && _isholding == HOLDING && obj->Cone_Mode == HOLDING) {
-        if(hit_owner_name2 == "obj") {
+        if(hit_owner_name == "obj") {
+            _isholding     = THROWING;
+            obj->Cone_Mode = THROWING;
+        }
+        if(hit_owner_name == "obj_1") {
             _isholding     = THROWING;
             obj->Cone_Mode = THROWING;
         }
@@ -145,10 +158,11 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
                 auto Get_col = hit_object->GetComponent<ComponentCollisionSphere>();
 
                 auto obj_get = hit_object;
-                  hit_object->SetTranslate({0, 0, pos_npc_.y + 25.0f});
+                // hit_object->SetTranslate({0, 0, pos_npc_.y + 25.0f});
 
                 Get_col->UseGravity(false);
             }
+
         }
         up_obj = true;
 
@@ -160,7 +174,22 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
             count = 0;
             throwing_time++;
             float3 obj_pos_;
-            if(hit_owner_name2 == "obj") {
+            if(hit_owner_name == "obj") {
+                auto hit_object = hit_info.hit_collision_->GetOwner();
+                auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
+                auto obj_get    = hit_object;
+
+                obj_pos_ = GetTranslate() + float3{0, 30.0f, 0};
+
+                hit_object->SetTranslate(obj_pos_);
+                auto model = GetComponent<ComponentModel>();
+                auto dir   = -model->GetWorldMatrix().axisZ();
+                obj->SetDirectior(dir * 15);
+               // obj->SetDirectior()
+                Get_col->UseGravity(true);
+                up_obj = false;
+            }
+            if(hit_owner_name == "obj_1") {
                 auto hit_object = hit_info.hit_collision_->GetOwner();
                 auto Get_col    = hit_object->GetComponent<ComponentCollisionSphere>();
                 auto obj_get    = hit_object;
@@ -186,7 +215,7 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
             if(obj->Cone_Mode == HOLDING) {
                 auto hit_object = hit_info.hit_collision_->GetOwner();
                 auto obj_get    = hit_object;
-                hit_object->SetTranslate({pos_.x, pos_npc_.y + 26.0f, pos_.z});
+                hit_object->SetTranslate({pos_npc_.x, pos_npc_.y + 26.0f, pos_npc_.z});
             }
         }
     }
