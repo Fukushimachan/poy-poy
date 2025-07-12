@@ -15,7 +15,7 @@ int        count_click;
 float3     pos_obj_;
 float3     pos_npc_;
 static int count = 0;
-
+float3     dis;
 namespace Game01 {
 
 bool Npc::Init()
@@ -51,11 +51,7 @@ bool Npc::Init()
     if(npc) {
         pos_npc_ = npc->GetTranslate();
     }
-    // auto cam_comp = AddComponent<ComponentCamera>();
 
-    //  SetTranslate({GetRand(500) - 200, 15.0f, GetRand(500) - 200});
-    //auto cam_lock = AddComponent<ComponentSpringArm>();
-    // cam_lock->SetSpringArmObject("Player");
     return true;
 }
 
@@ -64,13 +60,16 @@ void Npc::Update()
 {
     Super::Update();
 
-    auto npc          = Scene::Object::Get<Object>("NPC");
-    
+    auto npc         = Scene::Object::Get<Object>("NPC");
+    auto obj_        = Scene::Object::Get<Cone>();
+    auto get_obj_pos = obj_->GetTranslate();
+
+    pos_npc_.x += dis.x;
+    pos_npc_.y += dis.y;
+    pos_npc_.z += dis.z;
     if(npc) {
         pos_npc_ = npc->GetTranslate();
     }
-  
-   
 
 }    // namespace Game01
 
@@ -104,28 +103,28 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
 
-    float   max_dir = 100.0f;//一番遠くに距離のの初期値を置くを置く
-    ConePtr Get_obj      = nullptr;//一番近くのオブジェクトの保管
- 
+    float   max_dir = 100.0f;     //一番遠くに距離のの初期値を置くを置く
+    ConePtr Get_obj = nullptr;    //一番近くのオブジェクトの保管
+
     //すべて見て行って一番近くのオブジェクトを取得
     for(auto obj_ : Scene::Object::GetArray<Cone>()) {
         // ここに来る場合 obj がEnemyクラスということが保証されます。
         // nameは、必ず存在するため、オブジェクトの名前を取得できます。
-        auto name = obj_->GetName();
-        auto   get_obj_pos = obj_->GetTranslate();
-        auto   get_npc_pos = float3{pos_npc_.x, pos_npc_.y + 28.0f, pos_npc_.z};
-        float3 dis         = get_obj_pos - get_npc_pos;
-        float  dir         = sqrtf(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z);
+        auto name        = obj_->GetName();
+        auto get_obj_pos = obj_->GetTranslate();
+        auto get_npc_pos = float3{pos_npc_.x, pos_npc_.y + 28.0f, pos_npc_.z};
+        dis              = get_obj_pos - get_npc_pos;
+        float dir        = sqrtf(dis.x * dis.x + dis.y * dis.y + dis.z * dis.z);
         if(dir < max_dir) {
             max_dir = dir;
             Get_obj = obj_;
         }
     }
- 
-    auto& obj = Get_obj;//一番近くのオブジェクトを取得
-    auto  Get_col    = Get_obj->GetComponent<ComponentCollisionSphere>();//重力を帰るために必要
 
-    auto hit_owner_name2 = hit_info.hit_collision_->GetOwner()->GetNameDefault();//npcがあたっているものの名前を取得
+    auto& obj     = Get_obj;                                              //一番近くのオブジェクトを取得
+    auto  Get_col = Get_obj->GetComponent<ComponentCollisionSphere>();    //重力を帰るために必要
+
+    auto hit_owner_name2 = hit_info.hit_collision_->GetOwner()->GetNameDefault();    //npcがあたっているものの名前を取得
     //地面に当たっているobjをIDLE状態にする
     if(hit_owner_name2 == "Ground") {
         for(auto obj_ : Scene::Object::GetArray<Cone>()) {
@@ -174,15 +173,13 @@ void Npc::OnHit(const ComponentCollision::HitInfo& hit_info)
     //THROWING状態のとき投げる処理
     if(_isholding == THROWING) {
         if(obj->Cone_Mode == THROWING) {
-
             obj->SetTranslate(GetTranslate() + float3{0, 30.0f, 0});
             auto model = GetComponent<ComponentModel>();
             auto dir   = -model->GetWorldMatrix().axisZ();
             obj->SetDirectior(dir * 1.0f);
             Get_col->UseGravity(true);
             up_obj = false;
-            
-               
+
             _isholding = IDLE;
         }
     }

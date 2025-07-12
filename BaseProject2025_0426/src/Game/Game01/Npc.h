@@ -9,11 +9,10 @@ class Npc : public Object
 {
 public:
     BP_OBJECT_DECL(Npc, u8"Groundのシーン");
-   
+
     //! @brief 初期化
     //! @return 初期化済み
-    bool    Init() override;
-    
+    bool Init() override;
 
     //! @brief 更新
     void Update() override;
@@ -21,11 +20,7 @@ public:
     void Exit() override;
     bool up_obj     = false;
     int  _isholding = 0;
-   
 
-    
-    
-   
     enum
     {
         IDLE,
@@ -35,7 +30,6 @@ public:
     void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
-   
     // 必要であれば変数をここに追加する
 };
 }    // namespace Game01

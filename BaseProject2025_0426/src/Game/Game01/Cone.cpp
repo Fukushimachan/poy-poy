@@ -5,9 +5,7 @@
 #include <System/Component/ComponentObjectController.h>
 #include <System/Component/ComponentCollisionSphere.h>
 
-float3  pos_;
-
-
+float3 pos_;
 
 //! @brief 初期化
 //! @return 初期化済み
@@ -24,16 +22,16 @@ bool Cone::Init()
     Super::Init();
     Cone_Mode = IDLE;
     pos_      = GetTranslate();
-  
+
     SetName("obj");
-  
-    float h     = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
-    auto  coll  = AddComponent<ComponentCollisionSphere>();
+
+    float h    = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
+    auto  coll = AddComponent<ComponentCollisionSphere>();
     coll->SetTranslate({pos_.x, pos_.y, pos_.z});
     coll->SetRadius(radius_);
     //coll->SetHeight(h + 1);
     coll->UseGravity(true);
-    
+
     coll->SetCollisionGroup(ComponentCollision::CollisionGroup::ITEM);
     coll->SetHitCollisionGroup((u32)ComponentCollision::CollisionGroup::ENEMY | (u32)ComponentCollision::CollisionGroup::GROUND |
                                (u32)ComponentCollision::CollisionGroup::ITEM | (u32)ComponentCollision::CollisionGroup::WALL);
@@ -43,7 +41,6 @@ bool Cone::Init()
 //! @brief 更新
 void Cone::Update()
 {
-  
     if(auto collision = collision_.lock()) {
         collision->SetRadius(radius_);
     }
@@ -67,11 +64,9 @@ void Cone::Exit()
 void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
-   
-  
+
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
-   
- 
+
     if(hit_owner_name == "Wall") {
         direction_ = 0;
         //Cone_Mode = IDLE;
@@ -85,6 +80,5 @@ void Cone::SetDirectior(float3 dir)
 {
     direction_ = dir;
 }
-
 
 }    // namespace Game01
