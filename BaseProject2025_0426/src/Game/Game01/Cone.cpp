@@ -9,14 +9,13 @@ float3  pos_;
 float3  npc_pos;
 Object* _owner;
 
-
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
 //float Cone::speed_    = 1.0f;
 float Cone::radius_ = 5.0f;
 //float3 Cone::direction_ = {0, 0, 0};
-bool  Cone::Init()
+bool Cone::Init()
 {
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
@@ -118,7 +117,6 @@ void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
     //--------------------------------------------------------------------------
     auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
     if(hit_owner_name == "Ground") {
-        
         check_ = false;
         // Cone_Mode = IDLE;
         printfDx("HIT: %s\n", hit_object->GetNameDefault().data());

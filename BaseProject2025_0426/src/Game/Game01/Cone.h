@@ -40,8 +40,8 @@ public:
 
 private:
     // ジャンプしていることを示します
-   
-    float        speed_     = 1.0f;
+
+    float        speed_ = 1.0f;
     static float radius_;
 
     ComponentCollisionSphereWeakPtr collision_;
