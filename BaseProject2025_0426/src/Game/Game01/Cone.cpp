@@ -10,15 +10,9 @@ float3 pos_;
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
-//float Cone::speed_    = 1.0f;
 float Cone::radius_ = 5.0f;
-//float3 Cone::direction_ = {0, 0, 0};
-bool Cone::Init()
+bool  Cone::Init()
 {
-    // 最初に1回動作する
-    // ただし trueを返さなければ Initに何回も来る仕様。
-
-    // __super::Init();    //Object::Init();と同じ
     Super::Init();
     Cone_Mode = IDLE;
     pos_      = GetTranslate();
@@ -29,7 +23,7 @@ bool Cone::Init()
     auto  coll = AddComponent<ComponentCollisionSphere>();
     coll->SetTranslate({pos_.x, pos_.y, pos_.z});
     coll->SetRadius(radius_);
-    //coll->SetHeight(h + 1);
+
     coll->UseGravity(true);
 
     coll->SetCollisionGroup(ComponentCollision::CollisionGroup::ITEM);
@@ -64,17 +58,17 @@ void Cone::Exit()
 void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
     Super::OnHit(hit_info);
-
-    auto hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
+    ConePtr Get_obj        = nullptr;
+    auto    hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
 
     if(hit_owner_name == "Wall") {
         direction_ = 0;
-        //Cone_Mode = IDLE;
     }
     if(hit_owner_name == "Ground") {
         direction_ = 0;
-        //Cone_Mode = IDLE;
-    }    //--------------------------------------------------------------------------
+        //地面に当たっているobjをIDLE状態にする
+        Cone_Mode = IDLE;
+    }
 }
 void Cone::SetDirectior(float3 dir)
 {

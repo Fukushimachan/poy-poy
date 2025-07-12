@@ -17,13 +17,7 @@ bool Ground::Init()
     AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
     AddComponent<ComponentCollisionModel>()->AttachToModel();
     SetScaleAxisXYZ({20.0, 1.0, 20.0});
-    // __super::Init();    //Object::Init();と同じ
-
-    //グラウンドオブジェクト
-    // AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
-
-    //auto cam_lock = AddComponent<ComponentSpringArm>();
-    // cam_lock->SetSpringArmObject("Player");
+  
     return true;
 }
 

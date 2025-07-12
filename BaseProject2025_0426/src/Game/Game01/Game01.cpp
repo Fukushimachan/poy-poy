@@ -12,9 +12,10 @@ namespace Game01 {
 
 bool Game01::Init()
 {
-    //Scene::Object::Create<Npc>();
+
     Scene::Object::Create<Camera>();
     auto npc = Scene::Object::Create<Npc>();
+
     for(int i = 0; i < 10; ++i) {
         auto   object = Scene::Object::Create<Cone>();
         float3 pos_;
@@ -28,7 +29,7 @@ bool Game01::Init()
 
     ground->SetTranslate({0.0f, 0.0f, 0.0f});
     auto walls = Scene::Object::Create<Walls>()->SetName("Walls");
-    //   memory_pos_wall = walls->GetTranslate();
+  
     return true;
 }
 
