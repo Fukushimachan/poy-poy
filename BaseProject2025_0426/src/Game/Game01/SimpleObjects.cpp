@@ -75,15 +75,14 @@ void SimpleObjects::Update()
             SetTranslate(nowPos);
         }
     }
-    // 投掷后手动移动逻辑（新加）
     if(isThrown_) {
         if(throwTimer_ > 0.0f) {
             SetTranslate(GetTranslate() + throwDirection_ * 0.1f);
-            throwDirection_.y -= 0.1f;     // 模拟重力影响，逐渐下降
-            throwTimer_       -= 0.02f;    // 持续减少速度
+            throwDirection_.y -= 0.1f;
+            throwTimer_       -= 0.02f;
         }
         else {
-            isThrown_ = false;    // 移动结束
+            isThrown_ = false;
         }
     }
 }
@@ -92,6 +91,10 @@ void SimpleObjects::Lift()
     isLifted_  = true;
     liftTimer_ = 0.0f;
     isThrown_  = false;
+
+    if(auto col = GetComponent<ComponentCollisionCapsule>()) {
+        col->UseGravity(false);
+    }
 }
 
 bool SimpleObjects::IsLifted() const

@@ -1,6 +1,8 @@
 ﻿#include "Player.h"
 #include "SimpleObjects.h"
 #include <DxLib.h>
+#include <System/Component/ComponentModel.h>
+#include <System/Component/ComponentCollisionModel.h>
 #include <System/Component/ComponentCollisionCapsule.h>
 #include <System/Component/ComponentObjectController.h>
 
@@ -17,13 +19,22 @@ bool Player::Init()
     Super::Init();
 
     SetName("Player");
-    SetTranslate({0.0f, 5.0f, 0.0f});
+    SetTranslate({0.0f, -7.0f, 0.0f});
 
     auto col = AddComponent<ComponentCollisionCapsule>();
-    col->SetHeight(9.0f);
+    col->SetHeight(20.0f);
     col->SetRadius(4.0f);
     col->UseGravity();
     col->SetCollisionGroup(ComponentCollision::CollisionGroup::PLAYER);
+
+    auto model_comp = AddComponent<ComponentModel>("data/Sample/Player/model.mv1");
+    model_comp->UseShader(false);
+    model_comp->SetAnimation({
+        {"idle", "data/Sample/Player/Anim/anim_stand.mv1", 1, 1.0f},
+        {"walk",  "data/Sample/Player/Anim/anim_walk.mv1", 1, 1.0f},
+        {"jump",  "data/Sample/Player/Anim/anim_jump.mv1", 1, 1.0f},
+    });
+    model_comp->PlayAnimation("idle");
 
     auto obj_control = AddComponent<ComponentObjectController>();
     obj_control->SetMoveSpeed(1.0f);
@@ -34,23 +45,9 @@ bool Player::Init()
 
 void Player::Update()
 {
-    Super::Update();
+    __super::Update();
 
     float3 pos = GetTranslate();
-
-    //三角形の座標を設定
-    VECTOR top   = VGet(pos.x, pos.y + 7, pos.z);
-    VECTOR front = VGet(pos.x, pos.y, pos.z - 6);
-    VECTOR left  = VGet(pos.x - 6, pos.y, pos.z + 6);
-    VECTOR right = VGet(pos.x + 6, pos.y, pos.z + 6);
-
-    unsigned int color = GetColor(255, 0, 0);
-
-    // 三角形の描画
-    DrawTriangle3D(top, front, left, color, TRUE);
-    DrawTriangle3D(top, left, right, color, TRUE);
-    DrawTriangle3D(top, right, front, color, TRUE);
-    DrawTriangle3D(front, right, left, color, TRUE);
 
     if(CheckHitKey(KEY_INPUT_SPACE)) {
         auto&          objects      = SimpleObjects::GetAll();
@@ -65,9 +62,6 @@ void Player::Update()
         }
 
         if(liftedObject) {
-            //// 既に持ち上げている場合、もう一度押すと投げる
-            //float3 dir = float3(0.0f, 1.2f, 0.0f);
-            //liftedObject->Throw(dir);
         }
         else {
             // 持ち上げられていない場合、一番近いオブジェクトを探して持ち上げる
@@ -90,5 +84,4 @@ void Player::Update()
         }
     }
 }
-
 }    // namespace Game01
