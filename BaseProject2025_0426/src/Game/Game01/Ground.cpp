@@ -11,13 +11,19 @@ namespace Game01 {
 bool Ground::Init()
 {
     Super::Init();
-    // 最初に1回動作する
     SetName("Ground");
     // ただし trueを返さなければ Initに何回も来る仕様。
-    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
+    AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1")->UseShader(false);
     AddComponent<ComponentCollisionModel>()->AttachToModel();
     SetScaleAxisXYZ({20.0, 1.0, 20.0});
-  
+
+    // __super::Init();    //Object::Init();と同じ
+
+    //グラウンドオブジェクト
+    // AddComponent<ComponentModel>("data/Sample/SwordBout/Stage/ground.mv1");
+
+    //auto cam_lock = AddComponent<ComponentSpringArm>();
+    // cam_lock->SetSpringArmObject("Player");
     return true;
 }
 

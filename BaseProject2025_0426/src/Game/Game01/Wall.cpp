@@ -13,7 +13,7 @@ bool   Wall::Init()
     Super::Init();
     SetName("Wall");
     //カメラオブジェクト
-  
+
     auto coll = AddComponent<ComponentCollisionCapsule>();
     coll->SetRadius(5.0f);
     coll->SetHeight(200.0f);
@@ -28,7 +28,6 @@ void Wall::Update()
     // 毎フレーム動作する
     Super::Update();
     auto wall = Scene::Object::Get<Wall>();
- 
 }
 void Wall::Draw()
 {

@@ -13,6 +13,10 @@ namespace Game01 {
 float Cone::radius_ = 5.0f;
 bool  Cone::Init()
 {
+    // 最初に1回動作する
+    // ただし trueを返さなければ Initに何回も来る仕様。
+
+    // __super::Init();    //Object::Init();と同じ
     Super::Init();
     Cone_Mode = IDLE;
     pos_      = GetTranslate();
@@ -39,7 +43,7 @@ void Cone::Update()
         collision->SetRadius(radius_);
     }
     AddTranslate(direction_ * 15.0f);
-}
+        }
 
 void Cone::Draw()
 {
@@ -49,11 +53,18 @@ void Cone::Draw()
     auto color = GetColor(0, 0, 0);
     auto pos   = GetTranslate();
     DrawSphere3D(cast(pos), 5, 20, color, color, TRUE);
-}
+        }
 
-void Cone::Exit()
-{
-}
+    // if(check_hit == false) {
+
+    //  }
+    //  else {
+    //if(auto model = GetComponent<ComponentModel>()) {
+    // if(auto model = model_.lock()) {
+    //     if(!model->IsPlaying()) {
+    //         Scene::Object::Release(SharedThis());
+    //     }
+    // }
 
 void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
 {
@@ -75,4 +86,7 @@ void Cone::SetDirectior(float3 dir)
     direction_ = dir;
 }
 
+void Cone::Exit()
+{
+}
 }    // namespace Game01

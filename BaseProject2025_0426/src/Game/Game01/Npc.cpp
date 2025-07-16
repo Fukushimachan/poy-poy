@@ -20,6 +20,10 @@ namespace Game01 {
 
 bool Npc::Init()
 {
+    // 最初に1回動作する
+    // ただし trueを返さなければ Initに何回も来る仕様。
+
+    // __super::Init();    //Object::Init();と同じ
     Super::Init();
     _isholding = IDLE;
     SetName("NPC");
@@ -29,6 +33,8 @@ bool Npc::Init()
     enemy->SetAnimation({
 
         {"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
+        //    {"Death", "data/Sample/Enemy/Anim/Death.mv1", 0, 1.0f},
+        //    //	{"walk", "data/Sample/Enemy/Anim/Walk.mv1", 0, 1.0f},
     });
     //コリジョンの追加
     auto coll = AddComponent<ComponentCollisionCapsule>();
@@ -92,7 +98,10 @@ void Npc::Draw()
         DxLib::DrawLine3D(cast(prev_pos), cast(curr_pos), GetColor(0, 255, 255));
 
         prev_pos = curr_pos;
+        //prev_pos2 = curr_pos2;
+        //prev_pos1 = curr_pos1;
     }
+    //DrawSphere3D(cast(pos), 150,10, GetColor(0, 255, 255), GetColor(0, 255, 255), TRUE);
 }
 
 void Npc::Exit()
