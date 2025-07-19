@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ShapeSpawner.h"
 #include "SimpleObjects.h"
+#include "Ufo.h"
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
@@ -34,6 +35,9 @@ bool Game01::Init()
     Scene::Object::Create<Player>();
 
     Scene::Object::Create<ShapeSpawner>();
+
+    //Ufo
+    Scene::Object::Create<Ufo>();
 
     //三角形と球体
     auto obj1 = Scene::Object::Create<SimpleObjects>();
