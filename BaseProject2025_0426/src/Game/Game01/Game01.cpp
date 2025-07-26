@@ -1,13 +1,17 @@
 ﻿#include "Game01.h"
+#include "Cone.h"
 #include "Npc.h"
 #include "Camera.h"
 #include "Ground.h"
+
+#include "Walls.h"
 #include "Player.h"
 #include "ShapeSpawner.h"
 #include "SimpleObjects.h"
 #include "Ufo.h"
 //! @brief 初期化
 //! @return 初期化済み
+
 namespace Game01 {
 
 bool Game01::Init()
@@ -22,13 +26,16 @@ bool Game01::Init()
     SetLightAmbColor({0.4f, 0.4f, 0.4f, 1.0f});
 
     Scene::Object::Create<Camera>();
-    Scene::Object::Create<Npc>();
-    for(int x = 0; x < ground_w_max; ++x) {
-        for(int z = 0; z < ground_h_max; ++z) {
-            auto ground = Scene::Object::Create<Ground>();
-            ground->SetTranslate(
-                {x * ground_size - ground_w_max / 2 * ground_size + ground_size / 2, 0.0f, z * ground_size - ground_h_max / 2 * ground_size + ground_size / 2});
-        }
+ 
+    auto npc = Scene::Object::Create<Npc>();
+
+    for(int i = 0; i < 10; ++i) {
+        auto   object = Scene::Object::Create<Cone>();
+        float3 pos_;
+        pos_.x = GetRand(100);
+        pos_.y = 1.0f;
+        pos_.z = GetRand(100);
+        object->SetTranslate(pos_);
     }
 
     //プレイヤー
@@ -43,6 +50,7 @@ bool Game01::Init()
     auto obj1 = Scene::Object::Create<SimpleObjects>();
     obj1->SetShape(SimpleObjects::ShapeType::Tetrahedron);
     obj1->SetTranslate({-20.0f, 60.0f, 0.0f});
+    auto ground = Scene::Object::Create<Ground>()->SetName("Ground");
 
     auto obj2 = Scene::Object::Create<SimpleObjects>();
     obj2->SetShape(SimpleObjects::ShapeType::Sphere);
@@ -60,6 +68,10 @@ bool Game01::Init()
         obj->SetTranslate({0, -300.0f, 0});
     }
 
+
+    ground->SetTranslate({0.0f, 0.0f, 0.0f});
+    auto walls = Scene::Object::Create<Walls>()->SetName("Walls");
+  
     return true;
 }
 

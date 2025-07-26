@@ -17,7 +17,7 @@ bool Camera::Init()
     Super::Init();
     SetName("Camera");
 
-    //グラウンドオブジェクト
+    //カメラオブジェクト
     auto cam_comp = AddComponent<ComponentCamera>();
     cam_comp->SetPositionAndTarget({0.0f, 60.0f, 170.0f}, {0.0f, 0.0f, 0.0f});
 

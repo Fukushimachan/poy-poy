@@ -1,60 +1,60 @@
 ﻿#include "Cone.h"
+#include "Npc.h"
 #include <System/Component/ComponentModel.h>
 #include <System/Component/ComponentCollisionModel.h>
 #include <System/Component/ComponentObjectController.h>
-#include <System/Component/ComponentCollisionCapsule.h>
+#include <System/Component/ComponentCollisionSphere.h>
+
+float3 pos_;
 
 //! @brief 初期化
 //! @return 初期化済み
 namespace Game01 {
-
-bool Cone::Init()
+float Cone::radius_ = 5.0f;
+bool  Cone::Init()
 {
     // 最初に1回動作する
     // ただし trueを返さなければ Initに何回も来る仕様。
 
     // __super::Init();    //Object::Init();と同じ
     Super::Init();
+    Cone_Mode = IDLE;
+    pos_      = GetTranslate();
 
     SetName("obj");
 
     float h    = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
-    auto  coll = AddComponent<ComponentCollisionCapsule>();
-    SetTranslate({pos_dis.x, pos_dis.y, pos_dis.z / h / 2});
-    coll->SetRadius(5);
-    coll->SetHeight(h);
+    auto  coll = AddComponent<ComponentCollisionSphere>();
+    coll->SetTranslate({pos_.x, pos_.y, pos_.z});
+    coll->SetRadius(radius_);
 
+    coll->UseGravity(true);
+
+    coll->SetCollisionGroup(ComponentCollision::CollisionGroup::ITEM);
+    coll->SetHitCollisionGroup((u32)ComponentCollision::CollisionGroup::ENEMY | (u32)ComponentCollision::CollisionGroup::GROUND |
+                               (u32)ComponentCollision::CollisionGroup::ITEM | (u32)ComponentCollision::CollisionGroup::WALL);
     return true;
 }
 
 //! @brief 更新
 void Cone::Update()
 {
-    Super::Update();
-    //  float3 pos_dis = pos2 - pos;
-    // float  h       = sqrtf(pos_dis.x * pos_dis.x + pos_dis.y * pos_dis.y + pos_dis.z * pos_dis.z);
-    auto player = Scene::Object::Get<Object>("Player");
-    auto npc    = Scene::Object::Get<Object>("NPC");
-    auto obj    = Scene::Object::Get<Object>("obj");
-
-    if(player) {
-        SetRotationToPositionWithLimit(player->GetTranslate(), 3.0f);
-        //AddTranslate({0, 0, -enemy_speed * speed_}, true);
+    if(auto collision = collision_.lock()) {
+        collision->SetRadius(radius_);
     }
-    if(npc) {
-        float3 pos_ = npc->GetTranslate();
-        if(IsKeyRepeat(KEY_INPUT_P)) {
-            obj->SetTranslate({pos_dis.x + pos_.x, pos_dis.y + 10.0f + pos_.y, pos_dis.z + pos_.z});
-        }
-        else {
-            if(obj) {
-                obj->SetTranslate(pos_dis);
-                //AddTranslate({0, 0, -enemy_speed * speed_}, true);
-            }
+    AddTranslate(direction_ * 15.0f);
         }
 
-        //AddTranslate({0, 0, -enemy_speed * speed_}, true);
-    }
+void Cone::Draw()
+{
+    Super::Draw();
+
+    auto scale = GetScaleAxisXYZ();
+    auto color = GetColor(0, 0, 0);
+    auto pos   = GetTranslate();
+    DrawSphere3D(cast(pos), 5, 20, color, color, TRUE);
+        }
+
     // if(check_hit == false) {
 
     //  }
@@ -66,23 +66,24 @@ void Cone::Update()
     //     }
     // }
 
-    // }
+void Cone::OnHit(const ComponentCollision::HitInfo& hit_info)
+{
+    Super::OnHit(hit_info);
+    ConePtr Get_obj        = nullptr;
+    auto    hit_owner_name = hit_info.hit_collision_->GetOwner()->GetNameDefault();
 
-    //auto obj = Scene::Object::Get<Object>("obj");
-    if(obj) {
-        float3 pos_ = obj->GetTranslate();
-        DrawCone3D(cast(pos + pos_), cast(pos2 + pos_), 5, 10, GetColor(0, 0, 0), GetColor(0, 0, 0), TRUE);
+    if(hit_owner_name == "Wall") {
+        direction_ = 0;
+    }
+    if(hit_owner_name == "Ground") {
+        direction_ = 0;
+        //地面に当たっているobjをIDLE状態にする
+        Cone_Mode = IDLE;
     }
 }
-
-void Cone::Draw()
+void Cone::SetDirectior(float3 dir)
 {
-    Super::Draw();
-    //auto obj = Scene::Object::Get<Object>("obj");
-    //   if(obj) {
-    //       float3 pos_ = obj->GetTranslate();
-    //        DrawCone3D(cast(pos + pos_), cast(pos2 + pos_), 5, 10, GetColor(0, 0, 0), GetColor(0, 0, 0), TRUE);
-    //   }
+    direction_ = dir;
 }
 
 void Cone::Exit()

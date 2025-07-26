@@ -10,7 +10,7 @@
 bool SceneSample::Init()
 {
     // 仮モデルの読み込み
-    //model_ = MV1LoadModel("data/Sample/Player/model.mv1");
+    model_ = MV1LoadModel("data/Sample/Player/model.mv1");
 
     return true;
 }

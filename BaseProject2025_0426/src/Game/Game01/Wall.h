@@ -1,14 +1,13 @@
 ﻿#pragma once
-#pragma once
 #include <System/Scene.h>
 
 //! @brief チュートリアルシーン
 namespace Game01 {
-USING_PTR(Npc);
-class Npc : public Object
+USING_PTR(Wall);
+class Wall : public Object
 {
 public:
-    BP_OBJECT_DECL(Npc, u8"Groundのシーン");
+    BP_OBJECT_DECL(Wall, u8"Wallのシーン");
 
     //! @brief 初期化
     //! @return 初期化済み
@@ -18,16 +17,6 @@ public:
     void Update() override;
     void Draw() override;
     void Exit() override;
-    bool up_obj     = false;
-    int  _isholding = 0;
-
-    enum
-    {
-        IDLE,
-        HOLDING,
-        THROWING,
-    };
-    void OnHit(const ComponentCollision::HitInfo& hit_info) override;
 
 private:
     // 必要であれば変数をここに追加する
